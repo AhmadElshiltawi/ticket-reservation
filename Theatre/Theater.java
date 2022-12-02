@@ -1,3 +1,5 @@
+package Theatre;
+
 import java.util.HashMap;
 
 public class Theater {

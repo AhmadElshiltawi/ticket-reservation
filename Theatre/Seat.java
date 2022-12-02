@@ -1,3 +1,5 @@
+package Theatre;
+
 public class Seat {
     // Fields
     private String id;

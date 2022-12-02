@@ -1,4 +1,5 @@
 package Theatre;
+
 import  Entry.*;
 
 public class Ticket {
