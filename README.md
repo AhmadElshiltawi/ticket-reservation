@@ -1,2 +1,2 @@
 # ticket-reservation
-A simple cheater ticket reservation system
+A simple theater ticket reservation system
