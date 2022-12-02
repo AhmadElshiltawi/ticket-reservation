@@ -12,7 +12,7 @@ public class Database {
         HashMap<String, Theater> theaters = new HashMap<>();
         
         try {
-            connection = DriverManager.getConnection("jdbc:sqlite:SQlite/theater.db");
+            connection = DriverManager.getConnection("jdbc:sqlite:../Database/theater.db");
             System.out.println("Opened database connection");
             String query = "SELECT * FROM time_seat";
 
