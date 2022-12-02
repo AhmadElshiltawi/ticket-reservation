@@ -1,14 +1,15 @@
 package Theatre;
 import java.sql.*;
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Database
  */
 public class Database {
+    // Private field and constructor
+    private Theater theater;
+    private Database(){
 
-    public static void main(String[] args) {
         Connection connection = null;
         HashMap<String, Theater> theaters = new HashMap<>();
         
@@ -56,23 +57,42 @@ public class Database {
                 showtime = movie.getShowtime(showtime);
                 showtime.add(seat);
             }
+            this.theater = theaters.get("Theater480");
             
-            for(Map.Entry<String, Theater> t : theaters.entrySet() ){
-                for(Map.Entry<String, Movie> m : t.getValue().getMovies().entrySet()){
-                    System.out.println(m.getKey());
-                    for(Showtime s : m.getValue().getShowtimes() ) {
-                        System.out.println("\t" + s.getTime());
-                        for(Map.Entry<String, Seat> x : s.getSeats().entrySet()) {
-                            if(x.getValue().getIsMemberOnly())
-                                System.out.println("\t\t"+ x.getValue().getId());
-                        }
-                    }
-                }
+            // for(Map.Entry<String, Theater> t : theaters.entrySet() ){
+            //     for(Map.Entry<String, Movie> m : t.getValue().getMovies().entrySet()){
+            //         System.out.println(m.getKey());
+            //         for(Showtime s : m.getValue().getShowtimes() ) {
+            //             System.out.println("\t" + s.getTime());
+            //             for(Map.Entry<String, Seat> x : s.getSeats().entrySet()) {
+            //                 if(x.getValue().getIsMemberOnly())
+            //                     System.out.println("\t\t"+ x.getValue().getId());
+            //             }
+            //         }
+            //     }
 
-            }
+            // }
+
             connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    // Static object variable
+    private static Database db = null;
+    public static Database getInstance() {
+        if(db == null)
+            db = new Database();
+        return db;
+        
+    }
+    
+    // getter
+    public Theater getTheater() {
+        return theater;
+    }
+    
+    public static void main(String[] args) {
     }
 }
