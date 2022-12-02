@@ -7,6 +7,7 @@ import java.util.Map;
  * Database
  */
 public class Database {
+
     public static void main(String[] args) {
         Connection connection = null;
         HashMap<String, Theater> theaters = new HashMap<>();
@@ -40,18 +41,8 @@ public class Database {
 
                 // Create Seat
                 String seat_id = resultSet.getString("seat");
-                int num = resultSet.getInt("MemberOnly");
-                boolean memberOnly;
-                if(num == 0)
-                    memberOnly = false;
-                else
-                    memberOnly = true;
-                boolean booked;
-                num = resultSet.getInt("Booked");
-                if(num == 0)
-                    booked = false;
-                else
-                    booked = true;
+                boolean memberOnly = 0 != resultSet.getInt("MemberOnly");
+                boolean booked = 0 !=  resultSet.getInt("Booked");
                 Seat seat = new Seat(seat_id, memberOnly, booked);
 
                 // Make Theater object
