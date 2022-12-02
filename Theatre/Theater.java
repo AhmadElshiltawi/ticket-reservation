@@ -1,73 +1,54 @@
-package Theatre;
-
-import Entry.RegisteredUser;
-
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Theater {
-        private ArrayList<Movie> movies;
-        private ArrayList<Showroom> showrooms;
-        private ArrayList<RegisteredUser> users;
-
-        private String name;
-
-        public Theater(String name) {
-                this.name = name;
+    // Fields
+    private String name;
+    private HashMap<String, Movie> movies;
+    
+    // Constructor
+    public Theater(String name) {
+        this.name = name;
+        movies = new HashMap<>();
+    }
+    
+    // Methods
+    public Movie getMovie(String name) {
+        return movies.get(name);
+    }
+    public void addMovie(Movie movie) {
+        if(!movies.containsKey(movie.getTitle())){
+            movies.put(movie.getTitle(), movie);
         }
+    }
 
-        public String getName() {
-                return name;
-        }
-
-        public void setName(String name) {
-                this.name = name;
-        }
-
-        public ArrayList<Movie> getMovies() {
-                return movies;
-        }
-
-        public void setMovies(ArrayList<Movie> movies) {
-                this.movies = movies;
-        }
-
-        public ArrayList<Showroom> getShowrooms() {
-                return showrooms;
-        }
-
-        public void setShowrooms(ArrayList<Showroom> showrooms) {
-                this.showrooms = showrooms;
-        }
-
-        public ArrayList<RegisteredUser> getUsers() {
-                return users;
-        }
-
-        public void setUsers(ArrayList<RegisteredUser> users) {
-                this.users = users;
-        }
-
-        public void add(Movie movie) {
-                movies.add(movie);
-        }
-
-        public void add(Showroom room) {
-                showrooms.add(room);
-        }
-
-        public void add(RegisteredUser user) {
-                users.add(user);
-        }
-
-        public void remove(Movie movie) {
-                movies.remove(movie);
-        }
-
-        public void remove(Showroom room) {
-                showrooms.remove(room);
-        }
-
-        public void remove(RegisteredUser user) {
-                users.remove(user);
-        }
+    // Getters and setters
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    public HashMap<String, Movie> getMovies() {
+        return movies;
+    }
+    public void setMovies(HashMap<String, Movie> movies) {
+        this.movies = movies;
+    }
+    
+    // Overridden
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (!(obj instanceof Theater)) return false;
+        Theater theater = (Theater) obj;
+        if (theater.name.compareTo(this.name) == 0)
+            return true;
+        return false;
+    }
+    @Override
+    public int hashCode() {
+        int result=17;
+        result=31*result+(name!=null ? name.hashCode():0);
+        return result;
+    }
 }

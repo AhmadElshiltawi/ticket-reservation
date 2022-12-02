@@ -1,38 +1,56 @@
-package Theatre;
-
 import java.time.LocalDateTime;
+import java.util.HashMap;
 
 public class Showtime {
-    private LocalDateTime dateTime;
-    private Movie movie;
+    private int roomNumber;
+    private LocalDateTime time;
+    private HashMap<String, Seat> seats;
 
-    private Showtime(int year, int month, int day, int hour, int min, Movie movie) {
-        this.dateTime = LocalDateTime.of(year, month, day, hour, min);
-        this.movie = movie;
+    // Constructor
+    public Showtime(int roomNumber, int year, int month, int day, int hour, int minute){
+        this.roomNumber = roomNumber;
+        time = LocalDateTime.of(year, month, month, hour, minute);
+        seats = new HashMap<>();
     }
 
-    public LocalDateTime getDateTime() {
-        return dateTime;
+    // Methods
+    public void add(Seat seat){
+        seats.put(seat.getId(), seat);
     }
 
-    public void setDateTime(LocalDateTime dateTime) {
-        this.dateTime = dateTime;
+    // Getters and Setters
+    public int getRoomNumber() {
+        return roomNumber;
     }
-
-    public Movie getMovie() {
-        return movie;
+    public void setRoomNumber(int roomNumber) {
+        this.roomNumber = roomNumber;
     }
-
-    public void setMovie(Movie movie) {
-        this.movie = movie;
+    public LocalDateTime getTime() {
+        return time;
     }
-    public boolean refundable() {
-        LocalDateTime time = LocalDateTime.now().plusHours(72);
-        if ( time.compareTo(dateTime) >= 0) {
-            return false;
-        } else {
-            return true;
-        }
+    public void setTime(LocalDateTime time) {
+        this.time = time;
     }
-
+    public HashMap<String, Seat> getSeats() {
+        return seats;
+    }
+    public void setSeats(HashMap<String, Seat> seats) {
+        this.seats = seats;
+    }
+    
+    // Overridden functions
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (!(obj instanceof Showtime)) return false;
+        Showtime time = (Showtime) obj;
+        return time.time.isEqual(this.time) && time.roomNumber == this.roomNumber;
+    }
+    @Override
+    public int hashCode() {
+        int result=17;
+        result+=31*roomNumber;
+        result=31*result+(time!=null ? time.hashCode():0);
+        return result;
+    }
 }

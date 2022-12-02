@@ -1,45 +1,53 @@
-package Theatre;
-
 public class Seat {
-    private int row, col;
-    private boolean memberOnly, booked;
+    // Fields
+    private String id;
+    private boolean memberOnly;
+    private boolean isBooked;
 
-    public Seat(int row, int col, boolean memberOnly, boolean booked) {
-        this.row = row;
-        this.col = col;
+    // Constructor
+    public Seat(String id, boolean memberOnly, boolean isBooked){
+        this.id = id;
         this.memberOnly = memberOnly;
-        this.booked  = booked;
+        this.isBooked= isBooked;
     }
 
-    public int getRow() {
-        return row;
-    }
+    // Methods
+    
 
-    public void setRow(int row) {
-        this.row = row;
+    // Getters Setters
+    public String getId() {
+        return id;
     }
-
-    public int getCol() {
-        return col;
+    public void setId(String id) {
+        this.id = id;
     }
-
-    public void setCol(int col) {
-        this.col = col;
-    }
-
-    public boolean isMemberOnly() {
+    public boolean getIsMemberOnly() {
         return memberOnly;
     }
-
     public void setMemberOnly(boolean memberOnly) {
         this.memberOnly = memberOnly;
     }
-
-    public boolean isBooked() {
-        return booked;
+    public boolean getIsBooked() {
+        return isBooked;
+    }
+    public void setBooked(boolean isBooked) {
+        this.isBooked = isBooked;
     }
 
-    public void setBooked(boolean booked) {
-        this.booked = booked;
+    // Overloaded operations
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (!(obj instanceof Seat)) return false;
+        Seat seat = (Seat) obj;
+        if (seat.id.compareTo(this.id) == 0)
+            return true;
+        return false;
+    }
+    @Override
+    public int hashCode() {
+        int result=17;
+        result=31*result+(id!=null ? id.hashCode():0);
+        return result;
     }
 }

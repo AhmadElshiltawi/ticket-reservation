@@ -1,37 +1,57 @@
-package Theatre;
+import java.util.ArrayList;
 
 public class Movie {
-    private String name;
-    private String genre;
-    private double duration;
+    private String title;
+    private ArrayList<Showtime> showtimes;
 
-    public Movie(String name, String genre, double duration) {
-        this.name = name;
-        this.genre = genre;
-        this.duration = duration;
+    // Constructor
+    public Movie(String title) {
+        this.title = title;
+        showtimes = new ArrayList<>();
     }
 
-    public String getName() {
-        return name;
+    // Methods
+    public void addShowtime(Showtime showtime) {
+        if(!showtimes.contains(showtime))
+            showtimes.add(showtime);
+    }
+    public Showtime getShowtime(Showtime showtime) {
+        for(Showtime s : showtimes){
+            if(s.equals(showtime))
+                return s;
+        }
+        System.out.println("Error showtime not found!");
+        return showtime;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    // Getters and Setters
+    public String getTitle() {
+        return title;
+    }
+    public void setTitle(String title) {
+        this.title = title;
+    }
+    public ArrayList<Showtime> getShowtimes() {
+        return showtimes;
+    }
+    public void setShowtimes(ArrayList<Showtime> showtimes) {
+        this.showtimes = showtimes;
     }
 
-    public String getGenre() {
-        return genre;
+    // Overridden functions
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (!(obj instanceof Movie)) return false;
+        Movie movie = (Movie) obj;
+        if (movie.title.compareTo(this.title) == 0)
+            return true;
+        return false;
     }
-
-    public void setGenre(String genre) {
-        this.genre = genre;
-    }
-
-    public double getDuration() {
-        return duration;
-    }
-
-    public void setDuration(double duration) {
-        this.duration = duration;
+    @Override
+    public int hashCode() {
+        int result=17;
+        result=31*result+(title!=null ? title.hashCode():0);
+        return result;
     }
 }
