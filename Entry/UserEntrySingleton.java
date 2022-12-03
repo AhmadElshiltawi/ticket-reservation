@@ -33,7 +33,7 @@ public class UserEntrySingleton {
     }
 
     public void addRegisteredUser(String username, String password, String email) throws SQLException {
-        if (checkEmailExistance(email) && checkUsernameExistance(username)) {
+        if (Database.checkIfEmailExists(email) == false && Database.checkIfUsernameExists(username) == false) {
             if (!validateEmail(email)) {
                 System.out.println("Email " + email + " is not valid!");
                 return;
@@ -57,7 +57,6 @@ public class UserEntrySingleton {
 
             users.add(new RegisteredUser(username, password, email));
             Database.addUserToDatabase(username, password, email, true);
-            Database.populateUserArray(users);
         }
     }
 
@@ -74,34 +73,13 @@ public class UserEntrySingleton {
     }
 
     public void addOrdinaryUser(String email) throws SQLException {
-        if (checkEmailExistance(email)) {
+        if (!Database.checkIfEmailExists(email)) {
             if (!validateEmail(email)) {
                 return;
             }
             Database.addUserToDatabase("", "", email, false);
             users.add(new User(email));
         }
-    }
-
-    private boolean checkUsernameExistance(String username) {
-        for (int i = 0; i < users.size(); i++) {
-            if (users.get(i) instanceof RegisteredUser) {
-                RegisteredUser currentUser = (RegisteredUser) users.get(i);
-                if (currentUser.getUsername() == username) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    private boolean checkEmailExistance(String email) {
-        for (int i = 0; i < users.size(); i++) {
-            if (users.get(i).getEmail() == email) {
-                return false;
-            }
-        }
-        return true;
     }
 
     public boolean validateAccount(String authenticator, String password) {
@@ -124,7 +102,8 @@ public class UserEntrySingleton {
         return false;
     }
 
-    public void deleteUser(String email) {
+    public void deleteUser(String email) throws SQLException {
+        Database.deleteUserFromDatabase(email);
         for (int i = 0; i < users.size(); i++) {
             if (users.get(i).getEmail() == email) {
                 users.remove(i);
@@ -134,15 +113,10 @@ public class UserEntrySingleton {
 
     public void RegisterOrdinaryUser(String username, String password, String email) throws SQLException {
         deleteUser(email);
-        Database.deleteUserFromDatabase(email);
         addRegisteredUser(username, password, email);
     }
 
     public int getUserCount() {
         return users.size();
-    }
-
-    public List<User> getUsers() {
-        return users;
     }
 }
