@@ -1,7 +1,6 @@
 package Payment;
 
 import Entry.*;
-import Theatre.Ticket;
 
 public class Payment {
 

@@ -1,7 +1,12 @@
-package Theatre;
+package Project;
 import java.sql.*;
 import java.util.HashMap;
 import java.util.Map;
+
+import Theatre.Movie;
+import Theatre.Seat;
+import Theatre.Showtime;
+import Theatre.Theater;
 
 /**
  * Database
