@@ -132,4 +132,10 @@ INSERT INTO "time_seat" VALUES ('Theater480',2,'Spiderman',2022,12, 9, 18, 15, '
 INSERT INTO "time_seat" VALUES ('Theater480',2,'Spiderman',2022,12, 9, 18, 15, 'b3',0, 0);
 INSERT INTO "time_seat" VALUES ('Theater480',2,'Spiderman',2022,12, 9, 18, 15, 'b4',0, 0);
 INSERT INTO "time_seat" VALUES ('Theater480',2,'Spiderman',2022,12, 9, 18, 15, 'b5',1, 0);
+
+CREATE TABLE IF NOT EXISTS "tickets" (
+	"theater_id"	TEXT,
+	"email"	TEXT
+);
+
 COMMIT;
