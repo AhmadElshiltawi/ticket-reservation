@@ -2,6 +2,7 @@
 package UserInterface;
 
 import java.io.IOException;
+import Payment.*;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,6 +12,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 
 
 public class HomeController {
@@ -31,6 +33,7 @@ public class HomeController {
     private Button btnSettings;
     @FXML
     private Button btnSignout;
+    
     @FXML
     private Pane userPanel;
     @FXML
@@ -45,6 +48,19 @@ public class HomeController {
     private VBox pnItems;
     @FXML
     private VBox pnItems1;
+
+    //TICKET HANDLING
+    @FXML
+    private Text tickettheatre;
+    @FXML
+    private Text ticketmovie;
+    @FXML
+    private Text ticketroom;
+    @FXML
+    private Text ticketseat;
+    @FXML
+    private Text tickettime;
+    
     @FXML
     void changePanelHome(ActionEvent event) {
         pnlOverview.toFront();
@@ -65,18 +81,14 @@ public class HomeController {
     @FXML
     void userLogout(ActionEvent event) throws IOException {
         LoginGUI m = new LoginGUI();
+
         m.changeScene("/fxml/logingui.fxml");
     }
 
     public void ticketHandlerGUI(){
-        //In this code we need to retrieve ticket info
-        // and output them
-        // while enabling deletion as well
-
-
-        //pseudocode
-
         
+
+
     }
 
 }
