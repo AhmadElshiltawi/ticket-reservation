@@ -59,7 +59,7 @@ public class Database {
             query.setInt(9, showtime.getTime().getMinute());
             query.setString(10, seat.getId());
             System.out.println(query.executeUpdate());
-            
+            query.close();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -114,6 +114,66 @@ public class Database {
         return theaters.get("Theater480");
     }
 
+
+    // Ticket objects
+    public boolean findTicket(String ticket_id, String email) {
+        boolean found = false;
+        try {
+            String sql = 
+                "Select 1 " +
+                "FROM tickets " +
+                "WHERE ticket_id=? AND email=?";
+            PreparedStatement query = connection.prepareStatement(sql);
+            query.setString(1, ticket_id);
+            query.setString(2, email);
+            ResultSet resultSet = query.executeQuery();
+            while (resultSet.next()) {
+                found = true;
+            }
+            query.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return found;
+    }
+
+    public boolean addTicket(String id, String email) {
+        boolean added = false;
+        if( !findTicket(id, email) ){
+            try {
+                String sql = "INSERT INTO tickets VALUES (?, ?)";
+                PreparedStatement query = connection.prepareStatement(sql);
+                query.setString(1, id);
+                query.setString(2, email);
+                if (query.executeUpdate() > 0)
+                    added = true;
+                query.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return added;
+    }
+
+    public boolean removeTicket(String id, String email){
+        boolean removed = false;
+        if(findTicket(id, email))
+        {
+            String sql = 
+            "DELETE FROM tickets " +
+            "WHERE ticket_id = ? AND email = ?";
+            try {
+                PreparedStatement query = connection.prepareStatement(sql);
+                query.setString(1, id);
+                query.setString(2, email);
+                if(query.executeUpdate() != 0)
+                    removed = true;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return removed;
+    }
     // User Database Interactions
     public void addUserToDatabase(String username, String password, String email, boolean registered) throws SQLException {
         int registeredBit = (registered == true) ? 1 : 0;
@@ -188,17 +248,22 @@ public class Database {
     
     public static void main(String[] args) {
         Database db = getInstance();
-        Theater t = db.getTheater();
 
-        for( Map.Entry<String, Movie> m : t.getMovies().entrySet() ){
-            for(Showtime s : m.getValue().getShowtimes() ) {
-                for(Map.Entry<String, Seat> x : s.getSeats().entrySet()) {
-                    x.getValue().setBooked(true);
-                    if(x.getValue().getIsMemberOnly())
-                        db.updateSeatAvailability(t.getName(), m.getValue().getTitle(), s, x.getValue());
-                }
-            }
-        }
+        // Testing the add remove functionality of the ticket
+        //System.out.println(db.findTicket("CA13", "ahmad@email.com"));
+        //System.out.println(db.removeTicket("CA13", "ahmad@email.com"));
+        // Testing seat capability
+        //Theater t = db.getTheater();
+        // for( Map.Entry<String, Movie> m : t.getMovies().entrySet() ){
+        //     for(Showtime s : m.getValue().getShowtimes() ) {
+        //         for(Map.Entry<String, Seat> x : s.getSeats().entrySet()) {
+        //             x.getValue().setBooked(true);
+        //             if(x.getValue().getIsMemberOnly())
+        //                 db.updateSeatAvailability(t.getName(), m.getValue().getTitle(), s, x.getValue());
+        //         }
+        //     }
+        // }
+
         Database.closeALLConnections();
     }
 }

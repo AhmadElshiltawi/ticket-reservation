@@ -1,4 +1,5 @@
 package Payment;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import  Entry.*;
@@ -28,6 +29,12 @@ public class Ticket {
 
     }
 
+    public boolean isRefundable() {
+        LocalDateTime time = timeRoom.getTime().minusHours(72);
+        return LocalDateTime.now().isBefore(time);
+        
+    }
+    
     // Getter and Setters
     public String getId() {
         return id;
