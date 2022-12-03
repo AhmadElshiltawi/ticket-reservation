@@ -14,6 +14,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <AnchorPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="764.0" prefWidth="1050.0" style="-fx-background-color: #02030A;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UserInterface.HomeController">
    <children>
@@ -31,7 +32,7 @@
                   <Insets bottom="20.0" />
                </VBox.margin>
             </Label>
-            <Button fx:id="btnOverview" alignment="BASELINE_LEFT" graphicTextGap="22.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="42.0" prefWidth="259.0" stylesheets="@homeguistyle.css" text="Home" textFill="#e7e5e5">
+            <Button fx:id="btnOverview" alignment="BASELINE_LEFT" graphicTextGap="22.0" mnemonicParsing="false" onAction="#changePanelHome" prefHeight="42.0" prefWidth="259.0" stylesheets="@homeguistyle.css" text="Home" textFill="#e7e5e5">
                <graphic>
                   <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -49,7 +50,7 @@
                   <Insets left="50.0" />
                </padding>
             </Button>
-            <Button fx:id="btnOrders" alignment="BASELINE_LEFT" graphicTextGap="22.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="42.0" prefWidth="259.0" stylesheets="@homeguistyle.css" text="View Ticket">
+            <Button fx:id="btnOrders" alignment="BASELINE_LEFT" graphicTextGap="22.0" mnemonicParsing="false" onAction="#changePanelTickets" prefHeight="42.0" prefWidth="259.0" stylesheets="@homeguistyle.css" text="View Ticket">
                <graphic>
                   <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -61,23 +62,11 @@
                   <Insets left="50.0" />
                </padding>
             </Button>
-            <Button fx:id="btnMenus" alignment="BASELINE_LEFT" graphicTextGap="22.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="42.0" prefWidth="259.0" stylesheets="@homeguistyle.css" text="Search for Showtimes">
+            <Button fx:id="btnMenus" alignment="BASELINE_LEFT" graphicTextGap="22.0" mnemonicParsing="false" onAction="#changePanelSearchMovies" prefHeight="42.0" prefWidth="259.0" stylesheets="@homeguistyle.css" text="Search for Showtimes">
                <graphic>
                   <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../UserInterface/img/icons8_Xbox_Menu_32px.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-               <padding>
-                  <Insets left="50.0" />
-               </padding>
-            </Button>
-            <Button fx:id="btnSettings" alignment="BASELINE_LEFT" graphicTextGap="22.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="259.0" stylesheets="@homeguistyle.css" text="User and Payment Info">
-               <graphic>
-                  <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../UserInterface/img/icons8_Person_32px.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -103,12 +92,59 @@
          <children>
             <Pane fx:id="userPanel" prefHeight="200.0" prefWidth="200.0" />
             <Pane fx:id="showtimePanel" minHeight="-Infinity" prefHeight="758.0" prefWidth="793.0" style="-fx-background-color: #02030A;" />
-            <Pane fx:id="ticketPanel" minHeight="-Infinity" prefHeight="758.0" prefWidth="793.0" style="-fx-background-color: #02030A;" />
             <Pane fx:id="us" minHeight="-Infinity" prefHeight="758.0" prefWidth="793.0" style="-fx-background-color: #02030A;">
                <children>
                   <TextField layoutX="214.0" layoutY="48.0" />
                </children>
             </Pane>
+            <Pane fx:id="ticketPanel" minHeight="-Infinity" prefHeight="758.0" prefWidth="793.0" style="-fx-background-color: #02030A;">
+               <children>
+                  <TextField fx:id="ticketid" layoutX="240.0" layoutY="67.0" prefHeight="25.0" prefWidth="256.0" promptText="ID" />
+                  <TextField fx:id="ticketemail" layoutX="240.0" layoutY="102.0" prefHeight="25.0" prefWidth="256.0" promptText="Email" />
+                  <Text fill="WHITE" layoutX="148.0" layoutY="86.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ticket ID:">
+                     <font>
+                        <Font name="System Bold" size="17.0" />
+                     </font>
+                  </Text>
+                  <Text fill="WHITE" layoutX="148.0" layoutY="121.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email:">
+                     <font>
+                        <Font name="System Bold" size="17.0" />
+                     </font>
+                  </Text>
+                  <Button fx:id="retrieveTicketBtn" layoutX="444.0" layoutY="137.0" mnemonicParsing="false" text="Ticket" />
+                  <Text fill="WHITE" layoutX="105.0" layoutY="237.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Theatre">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Text>
+                  <Text fill="WHITE" layoutX="105.0" layoutY="267.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Movie">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Text>
+                  <Text fill="WHITE" layoutX="109.0" layoutY="356.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Time">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Text>
+                  <Text fill="WHITE" layoutX="105.0" layoutY="295.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Room">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Text>
+                  <Text fill="WHITE" layoutX="110.0" layoutY="325.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Seat">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="tickettheatre" fill="WHITE" layoutX="185.0" layoutY="236.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+                  <Text fx:id="ticketmovie" fill="WHITE" layoutX="185.0" layoutY="265.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+                  <Text fx:id="ticketroom" fill="WHITE" layoutX="185.0" layoutY="293.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+                  <Text fx:id="ticketseat" fill="WHITE" layoutX="185.0" layoutY="324.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+                  <Text fx:id="tickettime" fill="WHITE" layoutX="185.0" layoutY="354.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+                  <Button fx:id="ticketDeleteBtn" disable="true" layoutX="442.0" layoutY="379.0" mnemonicParsing="false" text="Delete Ticket" />
+                  <Text fx:id="successfulTicketDlt" fill="#f80000" layoutX="139.0" layoutY="155.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="279.47003173828125" />
+               </children></Pane>
             <Pane fx:id="pnlOverview" prefHeight="576.0" prefWidth="950.0" style="-fx-background-color: #02030A;">
                <children>
                   <Label layoutX="24.0" layoutY="194.0" minWidth="-Infinity" prefHeight="38.0" prefWidth="207.0" text="Now Playing" textFill="#2a73ff">

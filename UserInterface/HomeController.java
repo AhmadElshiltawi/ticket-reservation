@@ -12,27 +12,22 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
+
 public class HomeController {
-
-    public String username;
-
-    @FXML
-    private Button btnMenus;
-
-    @FXML
-    private ImageView amogus;
 
     @FXML
     private AnchorPane mainPane;
-
+    @FXML
+    private ImageView amogus;
     @FXML
     private Label userLoggedInShow;
-
+    @FXML
+    private Button btnOverview;
     @FXML
     private Button btnOrders;
 
     @FXML
-    private Button btnOverview;
+    private Button btnMenus;
 
     @FXML
     private Button btnSettings;
@@ -41,25 +36,44 @@ public class HomeController {
     private Button btnSignout;
 
     @FXML
+    private Pane userPanel;
+
+    @FXML
+    private Pane showtimePanel;
+
+    @FXML
+    private Pane ticketPanel;
+
+    @FXML
+    private Pane us;
+
+    @FXML
+    private Pane pnlOverview;
+
+    @FXML
     private VBox pnItems;
 
     @FXML
     private VBox pnItems1;
 
     @FXML
-    private Pane pnlCustomer;
+    void changePanelHome(ActionEvent event) {
+        pnlOverview.toFront();
+    }
 
     @FXML
-    private Pane pnlMenus;
+    void changePanelSearchMovies(ActionEvent event) {
+        showtimePanel.toFront();
+    }
 
     @FXML
-    private Pane pnlOrders;
+    void changePanelTickets(ActionEvent event) {
+        ticketPanel.toFront();
+    }
 
     @FXML
-    private Pane pnlOverview;
-
-    @FXML
-    void handleClicks(ActionEvent event) {
+    void changePanelUserInfo(ActionEvent event) {
+        userPanel.toFront();
     }
 
     @FXML
@@ -69,3 +83,6 @@ public class HomeController {
     }
 
 }
+
+
+

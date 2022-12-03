@@ -36,29 +36,29 @@
          <right>
             <AnchorPane prefHeight="400.0" prefWidth="273.0" style="-fx-background-color: #05071F;" BorderPane.alignment="CENTER">
                <children>
-                  <TextField fx:id="username" layoutX="79.0" layoutY="116.0" prefHeight="25.0" prefWidth="168.0" promptText="Username" />
-                  <PasswordField fx:id="password" layoutX="79.0" layoutY="152.0" prefHeight="25.0" prefWidth="168.0" promptText="Password" />
-                  <Button fx:id="loginbutton" layoutX="101.0" layoutY="187.0" mnemonicParsing="false" onAction="#userLogin" prefHeight="33.0" prefWidth="71.0" style="-fx-background-color: #FFFFFF;" text="Log In">
+                  <TextField fx:id="username" layoutX="79.0" layoutY="100.0" prefHeight="25.0" prefWidth="168.0" promptText="Username/Email" />
+                  <PasswordField fx:id="password" layoutX="79.0" layoutY="136.0" prefHeight="25.0" prefWidth="168.0" promptText="Password" />
+                  <Button fx:id="loginbutton" layoutX="124.0" layoutY="169.0" mnemonicParsing="false" onAction="#userLogin" prefHeight="33.0" prefWidth="71.0" style="-fx-background-color: #FFFFFF;" text="Log In">
                      <font>
                         <Font name="System Bold" size="13.0" />
                      </font>
                   </Button>
-                  <ImageView fitHeight="70.0" fitWidth="73.0" layoutX="100.0" layoutY="12.0">
+                  <ImageView fitHeight="57.0" fitWidth="59.0" layoutX="100.0" layoutY="12.0">
                      <image>
                         <Image url="UserInterface/img/1024px-White_lock.svg.png" />
                      </image>
                   </ImageView>
-                  <Label fx:id="wrongLogInLabel" layoutX="15.0" layoutY="86.0" prefHeight="0.0" prefWidth="252.0" textFill="RED">
+                  <Label fx:id="wrongLogInLabel" layoutX="14.0" layoutY="74.0" prefHeight="0.0" prefWidth="252.0" textAlignment="CENTER" textFill="RED">
                      <font>
                         <Font name="System Italic" size="13.0" />
                      </font>
                   </Label>
-                  <Label layoutX="60.0" layoutY="223.0" text="Don't have an account?" textFill="WHITE">
+                  <Label layoutX="149.0" layoutY="210.0" text="OR" textFill="WHITE">
                      <font>
                         <Font name="System Bold Italic" size="14.0" />
                      </font>
                   </Label>
-                  <Button fx:id="signUpButton" layoutX="101.0" layoutY="325.0" mnemonicParsing="false" onAction="#signUp" prefHeight="33.0" prefWidth="71.0" style="-fx-background-color: #FFFFFF;" text="Sign Up">
+                  <Button fx:id="signUpButton" layoutX="126.0" layoutY="341.0" mnemonicParsing="false" onAction="#signUp" prefHeight="33.0" prefWidth="76.0" style="-fx-background-color: #FFFFFF;" text="Sign Up">
                      <font>
                         <Font name="System Bold" size="13.0" />
                      </font>
@@ -68,24 +68,19 @@
                         <Font name="System Bold" size="13.0" />
                      </font>
                   </Button>
-                  <ImageView fitHeight="46.0" fitWidth="48.0" layoutX="24.0" layoutY="102.0">
+                  <ImageView fitHeight="46.0" fitWidth="48.0" layoutX="24.0" layoutY="90.0">
                      <image>
                         <Image url="@../UserInterface/img/icons8_Person_32px.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="33.0" fitWidth="33.0" layoutX="32.0" layoutY="146.0">
+                  <ImageView fitHeight="33.0" fitWidth="33.0" layoutX="32.0" layoutY="132.0">
                      <image>
                         <Image url="@../UserInterface/img/key-3-256.png" />
                      </image>
                   </ImageView>
-                  <PasswordField fx:id="newPassword" layoutX="79.0" layoutY="288.0" prefHeight="25.0" prefWidth="168.0" promptText="Password" />
-                  <TextField fx:id="newEmail" layoutX="79.0" layoutY="250.0" prefHeight="25.0" prefWidth="168.0" promptText="New Email" />
-                  <ImageView fitHeight="46.0" fitWidth="48.0" layoutX="26.0" layoutY="239.0">
-                     <image>
-                        <Image url="@../UserInterface/img/icons8_Person_32px.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="33.0" fitWidth="33.0" layoutX="34.0" layoutY="286.0">
+                  <PasswordField fx:id="newPassword" layoutX="80.0" layoutY="308.0" prefHeight="25.0" prefWidth="168.0" promptText="New Password" />
+                  <TextField fx:id="newEmail" layoutX="80.0" layoutY="272.0" prefHeight="25.0" prefWidth="168.0" promptText="New Email" />
+                  <ImageView fitHeight="33.0" fitWidth="33.0" layoutX="34.0" layoutY="306.0">
                      <image>
                         <Image url="@../UserInterface/img/key-3-256.png" />
                      </image>
@@ -95,6 +90,17 @@
                         <Font name="System Italic" size="10.0" />
                      </font>
                   </Label>
+                  <ImageView fitHeight="32.0" fitWidth="32.0" layoutX="32.0" layoutY="268.0">
+                     <image>
+                        <Image url="@../UserInterface/img/mail-64.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="46.0" fitWidth="48.0" layoutX="25.0" layoutY="224.0">
+                     <image>
+                        <Image url="@../UserInterface/img/icons8_Person_32px.png" />
+                     </image>
+                  </ImageView>
+                  <TextField fx:id="newUsername" layoutX="80.0" layoutY="236.0" prefHeight="25.0" prefWidth="168.0" promptText="New Username" />
                </children>
             </AnchorPane>
          </right>
