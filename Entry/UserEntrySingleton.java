@@ -21,7 +21,7 @@ public class UserEntrySingleton {
 
     private UserEntrySingleton() throws SQLException {
         db = Database.getInstance();
-        Database.populateUserArray(users);
+        db.populateUserArray(users);
     }
 
     public static UserEntrySingleton getInstance() throws SQLException {
@@ -33,7 +33,7 @@ public class UserEntrySingleton {
     }
 
     public void addRegisteredUser(String username, String password, String email) throws SQLException {
-        if (Database.checkIfEmailExists(email) == false && Database.checkIfUsernameExists(username) == false) {
+        if (db.checkIfEmailExists(email) == false && db.checkIfUsernameExists(username) == false) {
             if (!validateEmail(email)) {
                 System.out.println("Email " + email + " is not valid!");
                 return;
@@ -56,7 +56,7 @@ public class UserEntrySingleton {
             }
 
             users.add(new RegisteredUser(username, password, email));
-            Database.addUserToDatabase(username, password, email, true);
+            db.addUserToDatabase(username, password, email, true);
         }
     }
 
@@ -73,11 +73,11 @@ public class UserEntrySingleton {
     }
 
     public void addOrdinaryUser(String email) throws SQLException {
-        if (!Database.checkIfEmailExists(email)) {
+        if (!db.checkIfEmailExists(email)) {
             if (!validateEmail(email)) {
                 return;
             }
-            Database.addUserToDatabase("", "", email, false);
+            db.addUserToDatabase("", "", email, false);
             users.add(new User(email));
         }
     }
@@ -103,7 +103,7 @@ public class UserEntrySingleton {
     }
 
     public void deleteUser(String email) throws SQLException {
-        Database.deleteUserFromDatabase(email);
+        db.deleteUserFromDatabase(email);
         for (int i = 0; i < users.size(); i++) {
             if (users.get(i).getEmail() == email) {
                 users.remove(i);
@@ -119,4 +119,5 @@ public class UserEntrySingleton {
     public int getUserCount() {
         return users.size();
     }
+    
 }

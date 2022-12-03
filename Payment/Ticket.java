@@ -24,8 +24,8 @@ public class Ticket {
     }
 
     // Methods
-    public sendEmail(){
-        
+    public void sendEmail(){
+
     }
 
     // Getter and Setters
