@@ -1,7 +1,7 @@
 BEGIN TRANSACTION;
 CREATE TABLE IF NOT EXISTS "time_seat" (
-	"theatre"	TEXT,
-	"room number"	INTEGER,
+	"theater"	TEXT,
+	"room_number"	INTEGER,
 	"movie_name"	TEXT,
 	"year"	 INTEGER,
 	"month"	 INTEGER,
@@ -9,8 +9,8 @@ CREATE TABLE IF NOT EXISTS "time_seat" (
 	"hour"	 INTEGER,
 	"minute" INTEGER,
 	"seat"	TEXT,
-	"MemberOnly" BIT,
-	"Booked" BIT
+	"member_only" BIT,
+	"booked" BIT
 );
 INSERT INTO "time_seat" VALUES ('Theater480',1,'Avatar',2022,12, 4, 10, 15, 'a1',0, 0);
 INSERT INTO "time_seat" VALUES ('Theater480',1,'Avatar',2022,12, 4, 10, 15, 'a2',0, 0);

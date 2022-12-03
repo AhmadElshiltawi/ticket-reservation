@@ -11,7 +11,7 @@ public class Showtime {
     // Constructor
     public Showtime(int roomNumber, int year, int month, int day, int hour, int minute){
         this.roomNumber = roomNumber;
-        time = LocalDateTime.of(year, month, month, hour, minute);
+        time = LocalDateTime.of(year, month, day, hour, minute);
         seats = new HashMap<>();
     }
 
