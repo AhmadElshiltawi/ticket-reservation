@@ -23,7 +23,7 @@
       </AnchorPane>
    </left>
    <right>
-      <AnchorPane prefHeight="400.0" prefWidth="336.0" style="-fx-background-color: #150000;" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="400.0" prefWidth="336.0" style="-fx-background-color: #0B0B45;" BorderPane.alignment="CENTER">
          <children>
             <Label layoutX="14.0" layoutY="125.0" text="Username" textFill="WHITE">
                <font>
@@ -35,20 +35,35 @@
                </font></Label>
             <TextField fx:id="username" layoutX="98.0" layoutY="123.0" promptText="Username" />
             <PasswordField fx:id="password" layoutX="98.0" layoutY="162.0" promptText="Password" />
-            <Button fx:id="loginbutton" layoutX="101.0" layoutY="200.0" mnemonicParsing="false" onAction="#userLogin"  prefHeight="33.0" prefWidth="71.0" style="-fx-background-color: #FFFFFF;" text="Log In">
+            <Button fx:id="loginbutton" layoutX="101.0" layoutY="200.0" mnemonicParsing="false" onAction="#userLogin" prefHeight="33.0" prefWidth="71.0" style="-fx-background-color: #FFFFFF;" text="Log In">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font></Button>
-            <ImageView fitHeight="70.0" fitWidth="73.0" layoutX="100.0" layoutY="26.0">
+            <ImageView fitHeight="70.0" fitWidth="73.0" layoutX="100.0" layoutY="20.0">
                <image>
                   <Image url="UserInterface/img/1024px-White_lock.svg.png" />
                </image>
             </ImageView>
-            <Label fx:id="wrongLogInLabel" layoutX="15.0" layoutY="251.0" prefHeight="21.0" prefWidth="252.0" textFill="RED">
+            <Label fx:id="wrongLogInLabel" layoutX="11.0" layoutY="98.0" prefHeight="21.0" prefWidth="252.0" textFill="RED">
                <font>
                   <Font name="System Italic" size="13.0" />
                </font>
             </Label>
+            <Label layoutX="60.0" layoutY="244.0" text="Don't have an account?" textFill="WHITE">
+               <font>
+                  <Font name="System Bold Italic" size="14.0" />
+               </font>
+            </Label>
+            <Button fx:id="loginbutton1" layoutX="101.0" layoutY="274.0" mnemonicParsing="false" onAction="#userLogin" prefHeight="33.0" prefWidth="71.0" style="-fx-background-color: #FFFFFF;" text="Sign Up">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Button>
+            <Button fx:id="loginbutton11" layoutX="142.0" layoutY="364.0" mnemonicParsing="false" onAction="#userLogin" prefHeight="33.0" prefWidth="129.0" style="-fx-background-color: #0B0B45;" text="Continue as Guest" textFill="#806f6f">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Button>
          </children>
       </AnchorPane>
    </right>

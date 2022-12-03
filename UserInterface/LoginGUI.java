@@ -35,7 +35,7 @@ public class LoginGUI extends Application {
             stg.setScene(new Scene(pane,600,400));
         }
         
-        stg.setScene(new Scene(pane,784,583));
+        stg.setScene(new Scene(pane,1050,764));
         //stg.getScene().setRoot(pane);
     }
     public static void main(String[] args){launch(args);}
