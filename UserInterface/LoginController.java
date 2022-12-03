@@ -11,6 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
 
 public class LoginController {
     private UserEntrySingleton userSingleton;
@@ -24,8 +25,9 @@ public class LoginController {
     @FXML
     private Button loginbutton;
 
+    
     @FXML
-    private Label wrongLogInLabel;
+    private Label statusLabel;
 
     @FXML
     private Button signUpButton;
@@ -36,11 +38,15 @@ public class LoginController {
     @FXML
     private PasswordField newPassword;
 
+
+    @FXML
+    private Label signUpSuccessfulLabel;
+
     @FXML
     private TextField newEmail;
 
     @FXML
-    private Label signUpSuccessfulLabel;
+    private TextField newUsername;
 
     @FXML
     void userLogin(ActionEvent event) throws IOException, SQLException {
@@ -54,14 +60,15 @@ public class LoginController {
 
         if (user == null) {
             if (username.getText().isEmpty() && password.getText().isEmpty()) {
-                wrongLogInLabel.setText("Please enter your username and password");
+                statusLabel.setText("Please enter your username and password");
+                statusLabel.setTextFill(Color.RED);
             }
             else {
-                wrongLogInLabel.setText("Wrong username or password.");
+                statusLabel.setText("Wrong username or password.");
+                statusLabel.setTextFill(Color.RED);
             }
         }
         else {
-            wrongLogInLabel.setText("You have successfully logged in.");
             m.changeScene("/fxml/homegui.fxml");
         }
     }
@@ -82,15 +89,17 @@ public class LoginController {
         LoginGUI m = new LoginGUI();
         
         if (newEmail.getText().isEmpty() && newPassword.getText().isEmpty()) {
-            wrongLogInLabel.setText("Please enter your email and password");
+            statusLabel.setText("Please enter your email and password");
         }
         else {
             User newUser = userSingleton.addRegisteredUser("SigmaMindset", newPassword.getText(), newEmail.getText());
             if (newUser == null) {
-                wrongLogInLabel.setText("An error occurred! Please check your email and password");
+                statusLabel.setText("An error occurred! Please check your email and password");
+                statusLabel.setTextFill(Color.RED);
             }
             else {
-                wrongLogInLabel.setText("Username registered!");
+                statusLabel.setText("Username registered!");
+                statusLabel.setTextFill(Color.GREEN);
             }
         }
     
