@@ -1,7 +1,10 @@
 package UserInterface;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
+import Entry.User;
+import Entry.UserEntrySingleton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -11,6 +14,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 
 public class LoginController {
+    private UserEntrySingleton userSingleton;
+    private User loggedInUser = null;
 
     @FXML
     private TextField username;
@@ -21,8 +26,9 @@ public class LoginController {
     @FXML
     private Button loginbutton;
 
+    
     @FXML
-    private Label wrongLogInLabel;
+    private Label statusLabel;
 
     @FXML
     private Button signUpButton;
@@ -33,26 +39,38 @@ public class LoginController {
     @FXML
     private PasswordField newPassword;
 
+
+    @FXML
+    private Label signUpSuccessfulLabel;
+
     @FXML
     private TextField newEmail;
 
     @FXML
-    void userLogin(ActionEvent event) throws IOException {
+    private TextField newUsername;
 
+    @FXML
+    void userLogin(ActionEvent event) throws IOException, SQLException {
         checkLogin();
     }
 
-    private void checkLogin() throws IOException { //this is the function that checks the login to see if it is valid.
+    private void checkLogin() throws IOException, SQLException {
+        userSingleton = UserEntrySingleton.getInstance();
+        User user = userSingleton.validateAccount(username.getText().toString(), password.getText().toString());
         LoginGUI m = new LoginGUI();
-        if (username.getText().toString().equals("orionahn") && password.getText().toString().equals("123")) {
-            wrongLogInLabel.setText("You have successfully logged in.");
+
+        if (user == null) {
+            if (username.getText().isEmpty() && password.getText().isEmpty()) {
+                signUpSuccessfulLabel.setText("Please enter your username and password");
+            }
+            else {
+                signUpSuccessfulLabel.setText("Wrong username or password.");
+            }
+        }
+        else {
+            loggedInUser = user;
+            signUpSuccessfulLabel.setText("Logging in...");
             m.changeScene("/fxml/homegui.fxml");
-        } else if (username.getText().isEmpty() && password.getText().isEmpty()) {
-            wrongLogInLabel.setTextFill(Color.GREEN);
-            wrongLogInLabel.setText("Please enter your username and password");
-            
-        } else {
-            wrongLogInLabel.setText("Wrong username or password.");
         }
     }
 
@@ -63,15 +81,25 @@ public class LoginController {
     }
 
     @FXML
-    void signUp(ActionEvent event) {
+    void signUp(ActionEvent event) throws SQLException {
         checkSignUpValidity();
     }
 
-    private void checkSignUpValidity(){
-    LoginGUI m = new LoginGUI();
-
-    
-    
+    private void checkSignUpValidity() throws SQLException {
+        userSingleton = UserEntrySingleton.getInstance();
+        LoginGUI m = new LoginGUI();
+        
+        if (newEmail.getText().isEmpty() && newPassword.getText().isEmpty()) {
+            signUpSuccessfulLabel.setText("Please enter your email and password");
+        }
+        else {
+            User newUser = userSingleton.addRegisteredUser(newUsername.getText(), newPassword.getText(), newEmail.getText());
+            if (newUser == null) {
+                signUpSuccessfulLabel.setText("An error occurred! Please check your email and password");
+            }
+            else {
+                signUpSuccessfulLabel.setText("Username registered!");
+            }
+        }
     }
-
 }
