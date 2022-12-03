@@ -1,10 +1,13 @@
 package Entry;
+import java.sql.SQLException;
 import java.util.*;
 import java.util.regex.Pattern;
+import Project.Database;
 
 public class UserEntrySingleton {
     private static UserEntrySingleton instance = null;
     private List<User> users = new ArrayList<>();
+    static Database db;
     
     private static final String EMAIL_REGEX = "([a-zA-Z0-9]+(?:[._+-][a-zA-Z0-9]+)*)@([a-zA-Z0-9]+(?:[.-][a-zA-Z0-9]+)*[.][a-zA-Z]{2,})";
     private Pattern emailPattern = Pattern.compile(EMAIL_REGEX);
@@ -16,17 +19,20 @@ public class UserEntrySingleton {
     private static final String PASSWORD_REGEX = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!<>@$%^&*-]).{8,}$";
     private Pattern passwordPattern = Pattern.compile(PASSWORD_REGEX);
 
-    private UserEntrySingleton() {}
+    private UserEntrySingleton() throws SQLException {
+        db = Database.getInstance();
+        Database.populateUserArray(users);
+    }
 
-    public static UserEntrySingleton getInstance()
-    {
-        if (instance == null)
+    public static UserEntrySingleton getInstance() throws SQLException {
+        if (instance == null) {
             instance = new UserEntrySingleton();
-  
+        }
+
         return instance;
     }
 
-    public void addRegisteredUser(String username, String password, String email) {
+    public void addRegisteredUser(String username, String password, String email) throws SQLException {
         if (checkEmailExistance(email) && checkUsernameExistance(username)) {
             if (!validateEmail(email)) {
                 System.out.println("Email " + email + " is not valid!");
@@ -50,7 +56,8 @@ public class UserEntrySingleton {
             }
 
             users.add(new RegisteredUser(username, password, email));
-            System.out.println("Added " + username + "! array size: " + users.size());
+            Database.addUserToDatabase(username, password, email, true);
+            Database.populateUserArray(users);
         }
     }
 
@@ -66,14 +73,13 @@ public class UserEntrySingleton {
         return passwordPattern.matcher(password).matches();
     }
 
-    public void addOrdinaryUser(String email) {
+    public void addOrdinaryUser(String email) throws SQLException {
         if (checkEmailExistance(email)) {
             if (!validateEmail(email)) {
-                System.out.println("Email " + email + " is not valid!");
                 return;
             }
+            Database.addUserToDatabase("", "", email, false);
             users.add(new User(email));
-            System.out.println("Added " + email + "! array size: " + users.size());
         }
     }
 
@@ -82,7 +88,6 @@ public class UserEntrySingleton {
             if (users.get(i) instanceof RegisteredUser) {
                 RegisteredUser currentUser = (RegisteredUser) users.get(i);
                 if (currentUser.getUsername() == username) {
-                    System.out.println("Username (" + username + ") already exists!");
                     return false;
                 }
             }
@@ -93,7 +98,6 @@ public class UserEntrySingleton {
     private boolean checkEmailExistance(String email) {
         for (int i = 0; i < users.size(); i++) {
             if (users.get(i).getEmail() == email) {
-                System.out.println("Email (" + email + ") already exists!");
                 return false;
             }
         }
@@ -104,31 +108,19 @@ public class UserEntrySingleton {
         for (int i = 0; i < users.size(); i++) {
             if (users.get(i) instanceof RegisteredUser) {
                 RegisteredUser currentUser = (RegisteredUser) users.get(i);
-                
-                if (currentUser.getUsername() == authenticator) {
-                    if (currentUser.getPassword() == password) {
-                        System.out.println("Account validated!");
-                        return true;
-                    }
-                    else {
-                        System.out.println("The incorrect password was inputted!");
-                        return false;
-                    }
+
+                if (currentUser.getEmail().equals(authenticator)) {
+                    System.out.println("Account validated!");
+                    return true;
                 }
 
-                if (currentUser.getEmail() == authenticator) {
-                    if (currentUser.getPassword() == password) {
-                        System.out.println("Account validated!");
-                        return true;
-                    }
-                    else {
-                        System.out.println("The incorrect password was inputted!");
-                        return false;
-                    }
+                if (currentUser.getUsername().equals(authenticator)) {
+                    System.out.println("Account validated!");
+                    return true;
                 }
             }
         }
-        System.out.println("No account was found that matched (" + authenticator + ").");
+        System.out.println("Account NOT validated");
         return false;
     }
 
@@ -136,13 +128,21 @@ public class UserEntrySingleton {
         for (int i = 0; i < users.size(); i++) {
             if (users.get(i).getEmail() == email) {
                 users.remove(i);
-                System.out.println("User deleted! Array size: " + users.size());
             }
         }
     }
 
-    public void RegisterOrdinaryUser(String username, String password, String email) {
+    public void RegisterOrdinaryUser(String username, String password, String email) throws SQLException {
         deleteUser(email);
+        Database.deleteUserFromDatabase(email);
         addRegisteredUser(username, password, email);
+    }
+
+    public int getUserCount() {
+        return users.size();
+    }
+
+    public List<User> getUsers() {
+        return users;
     }
 }
