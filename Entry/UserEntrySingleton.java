@@ -6,7 +6,7 @@ import Project.Database;
 
 public class UserEntrySingleton {
     private static UserEntrySingleton instance = null;
-    private List<User> users = new ArrayList<>();
+    private List<User> users = new ArrayList<>(); // Local user arraylist
     static Database db;
     
     private static final String EMAIL_REGEX = "([a-zA-Z0-9]+(?:[._+-][a-zA-Z0-9]+)*)@([a-zA-Z0-9]+(?:[.-][a-zA-Z0-9]+)*[.][a-zA-Z]{2,})";
@@ -21,7 +21,7 @@ public class UserEntrySingleton {
 
     private UserEntrySingleton() throws SQLException {
         db = Database.getInstance();
-        db.populateUserArray(users);
+        db.populateUserArray(users); // populate the arraylist from the database
     }
 
     public static UserEntrySingleton getInstance() throws SQLException {
@@ -32,16 +32,16 @@ public class UserEntrySingleton {
         return instance;
     }
 
-    public void addRegisteredUser(String username, String password, String email) throws SQLException {
+    public User addRegisteredUser(String username, String password, String email) throws SQLException {
         if (db.checkIfEmailExists(email) == false && db.checkIfUsernameExists(username) == false) {
             if (!validateEmail(email)) {
                 System.out.println("Email " + email + " is not valid!");
-                return;
+                return null;
             }
 
             if (!validateUsername(username)) {
                 System.out.println("Username " + username + " is not valid!");
-                return;
+                return null;
             }
 
             if (!validatePassword(password)) {
@@ -52,12 +52,15 @@ public class UserEntrySingleton {
                 System.out.println("- At least one lowercase letter");
                 System.out.println("- At least one special character");
                 System.out.println("- At least one digit\n");
-                return;
+                return null;
             }
 
-            users.add(new RegisteredUser(username, password, email));
+            User newUser = new RegisteredUser(username, password, email);
+            users.add(newUser);
             db.addUserToDatabase(username, password, email, true);
+            return newUser;
         }
+        return null;
     }
 
     private boolean validateEmail(String email) {
@@ -82,24 +85,21 @@ public class UserEntrySingleton {
         }
     }
 
-    public boolean validateAccount(String authenticator, String password) {
+    public User validateAccount(String authenticator, String password) {
         for (int i = 0; i < users.size(); i++) {
             if (users.get(i) instanceof RegisteredUser) {
                 RegisteredUser currentUser = (RegisteredUser) users.get(i);
-
-                if (currentUser.getEmail().equals(authenticator)) {
-                    System.out.println("Account validated!");
-                    return true;
+            
+                if (currentUser.getEmail().equals(authenticator) && currentUser.getPassword().equals(password)) {
+                    return currentUser;
                 }
 
-                if (currentUser.getUsername().equals(authenticator)) {
-                    System.out.println("Account validated!");
-                    return true;
+                if (currentUser.getUsername().equals(authenticator) && currentUser.getPassword().equals(password)) {
+                    return currentUser;
                 }
             }
         }
-        System.out.println("Account NOT validated");
-        return false;
+        return null;
     }
 
     public void deleteUser(String email) throws SQLException {
