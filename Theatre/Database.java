@@ -76,7 +76,7 @@ public class Database {
         }
     }
     
-    public void updateSeatAvailability(Theater theater, Movie movie, Showtime showtime, Seat seat){
+    public void updateSeatAvailability(String theater, String movie, Showtime showtime, Seat seat){
         try {
             String sql =
                 "UPDATE time_seat " +
@@ -84,9 +84,9 @@ public class Database {
                 "WHERE theater=? AND room_number=? AND movie_name=? AND year=? AND month=? AND day=? AND hour=? AND minute=? AND seat=?";
             PreparedStatement query = connection.prepareStatement(sql);
             query.setBoolean(1, seat.getIsBooked());
-            query.setString(2, theater.getName());
+            query.setString(2, theater);
             query.setInt(3,showtime.getRoomNumber());
-            query.setString(4, movie.getTitle());
+            query.setString(4, movie);
             query.setInt(5, showtime.getTime().getYear());
             query.setInt(6, showtime.getTime().getMonthValue());
             query.setInt(7, showtime.getTime().getDayOfMonth());
@@ -115,7 +115,7 @@ public class Database {
                 for(Map.Entry<String, Seat> x : s.getSeats().entrySet()) {
                     x.getValue().setBooked(true);
                     if(x.getValue().getIsMemberOnly())
-                        db.updateSeatAvailability(t, m.getValue(), s, x.getValue());
+                        db.updateSeatAvailability(t.getName(), m.getValue().getTitle(), s, x.getValue());
                 }
             }
         }
