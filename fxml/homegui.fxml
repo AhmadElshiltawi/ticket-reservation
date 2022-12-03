@@ -102,7 +102,14 @@
       <StackPane layoutX="258.0" prefHeight="576.0" prefWidth="793.0" style="-fx-background-color: #02030A;">
          <children>
             <Pane fx:id="userPanel" prefHeight="200.0" prefWidth="200.0" />
-            <Pane fx:id="pnlOverview" prefHeight="576.0" prefWidth="950.0">
+            <Pane fx:id="showtimePanel" minHeight="-Infinity" prefHeight="758.0" prefWidth="793.0" style="-fx-background-color: #02030A;" />
+            <Pane fx:id="ticketPanel" minHeight="-Infinity" prefHeight="758.0" prefWidth="793.0" style="-fx-background-color: #02030A;" />
+            <Pane fx:id="us" minHeight="-Infinity" prefHeight="758.0" prefWidth="793.0" style="-fx-background-color: #02030A;">
+               <children>
+                  <TextField layoutX="214.0" layoutY="48.0" />
+               </children>
+            </Pane>
+            <Pane fx:id="pnlOverview" prefHeight="576.0" prefWidth="950.0" style="-fx-background-color: #02030A;">
                <children>
                   <Label layoutX="24.0" layoutY="194.0" minWidth="-Infinity" prefHeight="38.0" prefWidth="207.0" text="Now Playing" textFill="#2a73ff">
                      <font>
@@ -217,13 +224,6 @@
                         <Font name="System Bold" size="26.0" />
                      </font>
                   </Label>
-               </children>
-            </Pane>
-            <Pane fx:id="showtimePanel" minHeight="-Infinity" prefHeight="758.0" prefWidth="793.0" style="-fx-background-color: #02030A;" />
-            <Pane fx:id="ticketPanel" minHeight="-Infinity" prefHeight="758.0" prefWidth="793.0" style="-fx-background-color: #02030A;" />
-            <Pane fx:id="us" minHeight="-Infinity" prefHeight="758.0" prefWidth="793.0" style="-fx-background-color: #02030A;">
-               <children>
-                  <TextField layoutX="214.0" layoutY="48.0" />
                </children>
             </Pane>
          </children>
