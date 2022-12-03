@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS "time_seat" (
 	"member_only" BIT,
 	"booked" BIT
 );
+
 INSERT INTO "time_seat" VALUES ('Theater480',1,'Avatar',2022,12, 4, 10, 15, 'a1',0, 0);
 INSERT INTO "time_seat" VALUES ('Theater480',1,'Avatar',2022,12, 4, 10, 15, 'a2',0, 0);
 INSERT INTO "time_seat" VALUES ('Theater480',1,'Avatar',2022,12, 4, 10, 15, 'a3',0, 0);
@@ -143,5 +144,11 @@ CREATE TABLE IF NOT EXISTS "tickets" (
 	"date" TEXT
 );
 
+CREATE TABLE IF NOT EXISTS "user" (
+	"username" TEXT,
+	"email" TEXT,
+	"password" TEXT,
+	"registered" BIT
+);
 
 COMMIT;
