@@ -48,11 +48,13 @@ public class HomeController {
     void handleClicks(ActionEvent event) {
 
     }
-
     @FXML
     void userLogout(ActionEvent event) throws IOException{
         LoginGUI m = new LoginGUI();
         m.changeScene("/fxml/logingui.fxml");
     }
+
+
+    
 
 }

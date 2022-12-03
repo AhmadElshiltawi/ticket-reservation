@@ -28,6 +28,12 @@ public class LoginController {
     private Label wrongLogInLabel;
 
     @FXML
+    private Button signUpButton;
+
+    @FXML
+    private Button skipButton;
+
+    @FXML
     void userLogin(ActionEvent event) throws IOException {
         
         // loginbutton.setOnKeyPressed(new EventHandler<KeyEvent>() {
@@ -57,6 +63,19 @@ public class LoginController {
         else{
             wrongLogInLabel.setText("Wrong username or password.");
         }
+    }
+
+    
+
+    @FXML
+    void continueUnregistered(ActionEvent event) throws IOException {
+        LoginGUI m = new LoginGUI();
+        m.changeScene("/fxml/homeguiguest.fxml");
+    }
+
+    @FXML
+    void signUp(ActionEvent event) {
+
     }
     
 }
