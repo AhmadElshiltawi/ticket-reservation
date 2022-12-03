@@ -1,10 +1,11 @@
 package Project;
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import Entry.*;
+import Payment.Ticket;
 import Theatre.*;
 
 /**
@@ -116,11 +117,11 @@ public class Database {
 
 
     // Ticket objects
-    public boolean findTicket(String ticket_id, String email) {
-        boolean found = false;
+    public Ticket findTicket(String ticket_id, String email) {
+        Ticket ticket = null;
         try {
             String sql = 
-                "Select 1 " +
+                "Select * " +
                 "FROM tickets " +
                 "WHERE ticket_id=? AND email=?";
             PreparedStatement query = connection.prepareStatement(sql);
@@ -128,23 +129,41 @@ public class Database {
             query.setString(2, email);
             ResultSet resultSet = query.executeQuery();
             while (resultSet.next()) {
-                found = true;
+                String theater = resultSet.getString("theater");
+                int room = resultSet.getInt("room");
+                String movie = resultSet.getString("movie");
+                String seat = resultSet.getString("seat");
+                LocalDateTime time = LocalDateTime.parse(resultSet.getString("date"));
+                ticket = new Ticket(ticket_id, theater, movie, email, room, seat, time);
             }
             query.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return found;
+        return ticket;
     }
 
-    public boolean addTicket(String id, String email) {
+    public boolean addTicket(Ticket ticket) {
         boolean added = false;
-        if( !findTicket(id, email) ){
+        String id = ticket.getId();
+        String email = ticket.getEmail();
+        String theater = ticket.getTheater();
+        int room = ticket.getRoom();
+        String movie = ticket.getMovie();
+        String seat = ticket.getSeat();
+        String date = ticket.getTime().toString();
+
+        if( findTicket(id, email) == null){
             try {
-                String sql = "INSERT INTO tickets VALUES (?, ?)";
+                String sql = "INSERT INTO tickets VALUES (?, ?, ?, ?, ?, ?, ?)";
                 PreparedStatement query = connection.prepareStatement(sql);
                 query.setString(1, id);
                 query.setString(2, email);
+                query.setString(3, theater);
+                query.setInt(4, room);
+                query.setString(5, movie);
+                query.setString(6, seat);
+                query.setString(7, date);
                 if (query.executeUpdate() > 0)
                     added = true;
                 query.close();
@@ -157,7 +176,7 @@ public class Database {
 
     public boolean removeTicket(String id, String email){
         boolean removed = false;
-        if(findTicket(id, email))
+        if( findTicket(id, email) != null)
         {
             String sql = 
             "DELETE FROM tickets " +
@@ -174,6 +193,7 @@ public class Database {
         }
         return removed;
     }
+
     // User Database Interactions
     public void addUserToDatabase(String username, String password, String email, boolean registered) throws SQLException {
         int registeredBit = (registered == true) ? 1 : 0;
@@ -248,6 +268,11 @@ public class Database {
     
     public static void main(String[] args) {
         Database db = getInstance();
+        //Ticket tick = new Ticket("Theater480", "Avatar","person1@email.com", 1, "a2", LocalDateTime.now());
+        Ticket tick = db.findTicket("21", "person1@email.com");
+        System.out.println(tick.getMovie());
+        System.out.println(db.removeTicket("12", "person1@email.com"));
+        //System.out.println(db.addTicket(tick));
 
         // Testing the add remove functionality of the ticket
         //System.out.println(db.findTicket("CA13", "ahmad@email.com"));
