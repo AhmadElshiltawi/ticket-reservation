@@ -13,7 +13,7 @@ public class LoginGUI extends Application {
     private static Stage stg;
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) throws Exception { //This function starts the GUI for the login page
         stg = primaryStage;
         primaryStage.setResizable(true);
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/logingui.fxml"));
@@ -23,7 +23,7 @@ public class LoginGUI extends Application {
 
     }
 
-    public void changeScene(String fxml) throws IOException {
+    public void changeScene(String fxml) throws IOException {  //this function changes the scene to the next one from the login page
         Parent pane = FXMLLoader.load(getClass().getResource(fxml));
         Parent pane2 = FXMLLoader.load(getClass().getResource(fxml));
         if (fxml == "/fxml/logingui.fxml") {
@@ -35,7 +35,7 @@ public class LoginGUI extends Application {
         // stg.getScene().setRoot(pane);
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) { //this just runs the gui
         launch(args);
     }
 
