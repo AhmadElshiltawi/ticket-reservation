@@ -2,15 +2,22 @@ package UserInterface;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.format.DateTimeFormatter;
+
 import Entry.*;
 import Theatre.*;
 import Project.*;
+import Payment.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -26,7 +33,11 @@ public class GUIController {
 
     private User loggedInUser = null;
     @FXML
-    private AnchorPane unregisteredUserHome;
+    private ScrollPane scrollerNews;
+    @FXML
+    private ImageView announcementNotificationImg;
+    @FXML
+    private Label AnnouncementsTitle;
 
     @FXML
     private Button homeBtnUnregistered;
@@ -154,14 +165,6 @@ public class GUIController {
     @FXML
     private TextField newUsername;
 
-    @FXML
-    void LoginSignupUnregisteredClick(ActionEvent event) {
-        
-            loginHome.setVisible(true);
-            loginHome.setDisable(false);
-            unregisteredUserHome.setDisable(true);
-            unregisteredUserHome.setVisible(false);
-    }
 
     @FXML
     void changePanelHome(ActionEvent event) {
@@ -176,26 +179,63 @@ public class GUIController {
     @FXML
     void changePanelTickets(ActionEvent event) {
         ticketPaneRegistered.toFront();
-        ticketemail.setText(loggedInUser.getEmail());
+        
     }
 
+    @FXML
+    void retrieveTicket(ActionEvent event) {
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        
+        if (loggedInUser != null){
+            ticketemail.setText(loggedInUser.getEmail());
+        }
+        Ticket newTicket = new Ticket(ticketid.getText(), null, null, ticketemail.getText(), 0, null, null);
+        Database ticketfinder = Database.getInstance();
+        newTicket = ticketfinder.findTicket(ticketid.getText(), ticketemail.getText());
+        
+        if (newTicket != null){
+            tickettheatre.setText(newTicket.getTheater()); 
+            ticketmovie.setText(newTicket.getMovie());
+            ticketid.setText(newTicket.getId());
+            int room = newTicket.getRoom();
+            String wahoo = Integer.toString(room);
+            ticketroom.setText(wahoo);
+            ticketseat.setText(newTicket.getSeat());
+            String formattedmovietime = newTicket.getTime().format(dateTimeFormatter);
+            tickettime.setText(formattedmovietime);
+            ticketDeleteBtn.setDisable(false);
+            
+        }
+        else{
+            Alert alert = new Alert(AlertType.ERROR, "No ticket found.", ButtonType.CLOSE);
+            alert.showAndWait();
+            if (alert.getResult() == ButtonType.CLOSE){
+                alert.close();
+            }
+        }
+    }
+    @FXML
+    void deleteTicket(ActionEvent event) {
+        Alert alert = new Alert(AlertType.ERROR, "Ticket Deleted.", ButtonType.CLOSE);
+            alert.showAndWait();
+            if (alert.getResult() == ButtonType.CLOSE){
+                alert.close();
+            }
+        Database ticketfinder = Database.getInstance();
+        ticketfinder.removeTicket(ticketid.getText(), ticketemail.getText());
+        tickettheatre.setText(""); 
+        ticketmovie.setText("");
+        ticketid.setText("");
+        ticketroom.setText("");
+        ticketseat.setText("");
+        tickettime.setText("");
+        ticketDeleteBtn.setDisable(true);
+        
+    }
     @FXML
     void changePanelUserInfo(ActionEvent event) {
         userInfoPaneRegistered.toFront();
     }
-
-
-    @FXML
-    void homeButtonUnregisteredClicked(ActionEvent event) {
-
-    }
-
-    @FXML
-    void showtimeSearchUnregisteredClick(ActionEvent event) {
-
-    }
-
-
     @FXML
     void userLogout(ActionEvent event) {
             loginHome.setVisible(true);
@@ -205,19 +245,13 @@ public class GUIController {
     }
 
     @FXML
-    void viewTicketUnregisteredClick(ActionEvent event) {
-        
-    }
-
-    @FXML
     void userLogin(ActionEvent event) throws IOException, SQLException {
         checkLogin();
     }
-
     private void checkLogin() throws IOException, SQLException {
         userSingleton = UserEntrySingleton.getInstance();
         User user = userSingleton.validateAccount(username.getText().toString(), password.getText().toString());
-        LoginGUI m = new LoginGUI();
+        GUI m = new GUI();
 
         if (user == null) {
             if (username.getText().isEmpty() && password.getText().isEmpty()) {
@@ -231,15 +265,15 @@ public class GUIController {
         }
         else {
             loggedInUser = user;
-            signUpSuccessfulLabel.setText("Logging in...");
+            signUpSuccessfulLabel.setText("");
             loginHome.setVisible(false);
             loginHome.setDisable(true);
             registeredUserHome.setDisable(false);
             registeredUserHome.setVisible(true);
-            unregisteredUserHome.setDisable(true);
             userLoggedInShowField.setText(username.getText());
-
-            
+            AnnouncementsTitle.setVisible(true);
+            announcementNotificationImg.setVisible(true);
+            scrollerNews.setVisible(true);
         }
     }
     @FXML
@@ -247,8 +281,14 @@ public class GUIController {
         loginHome.setVisible(false);
         registeredUserHome.setDisable(false);
         registeredUserHome.setVisible(true);
-        userLoggedInShowField.setText("Guest");
         loggedInUser = null;
+        if (loggedInUser == null){
+            userLoggedInShowField.setText("Guest");
+            AnnouncementsTitle.setVisible(false);
+            announcementNotificationImg.setVisible(false);
+            scrollerNews.setVisible(false);
+        }
+        
         
     }
     @FXML
@@ -257,7 +297,7 @@ public class GUIController {
     }
     private void checkSignUpValidity() throws SQLException {
         userSingleton = UserEntrySingleton.getInstance();
-        LoginGUI m = new LoginGUI();
+        GUI m = new GUI();
         
         if (newEmail.getText().isEmpty() && newPassword.getText().isEmpty()) {
             signUpSuccessfulLabel.setText("Please enter your email and password");

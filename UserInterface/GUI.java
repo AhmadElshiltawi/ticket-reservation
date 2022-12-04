@@ -8,14 +8,14 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class LoginGUI extends Application {
+public class GUI extends Application {
 
     private static Stage stg;
 
     @Override
     public void start(Stage primaryStage) throws Exception { //This function starts the GUI for the login page
         stg = primaryStage;
-        primaryStage.setResizable(true);
+        primaryStage.setResizable(false);
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/gui.fxml"));
         primaryStage.setTitle("GUI");
         primaryStage.setScene(new Scene(root, 1050, 764));

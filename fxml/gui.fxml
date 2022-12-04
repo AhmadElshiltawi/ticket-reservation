@@ -24,7 +24,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #02030A;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UserInterface.GUIController">
    <children>
-      <AnchorPane fx:id="registeredUserHome" disable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="764.0" prefWidth="1050.0" style="-fx-background-color: #02030A;" visible="false">
+      <AnchorPane fx:id="registeredUserHome" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="764.0" prefWidth="1050.0" style="-fx-background-color: #02030A;">
          <children>
             <VBox alignment="TOP_CENTER" prefHeight="576.0" prefWidth="256.0" style="-fx-background-color: #05071F;" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
@@ -111,7 +111,6 @@
             </VBox>
             <StackPane layoutX="258.0" prefHeight="576.0" prefWidth="793.0" style="-fx-background-color: #02030A;">
                <children>
-                  <Pane fx:id="userInfoPaneRegistered" prefHeight="200.0" prefWidth="200.0" />
                   <Pane fx:id="ticketPaneRegistered" minHeight="-Infinity" prefHeight="758.0" prefWidth="793.0" style="-fx-background-color: #02030A;">
                      <children>
                         <TextField fx:id="ticketid" layoutX="240.0" layoutY="67.0" prefHeight="25.0" prefWidth="256.0" promptText="ID" />
@@ -126,7 +125,7 @@
                               <Font name="System Bold" size="17.0" />
                            </font>
                         </Text>
-                        <Button fx:id="retrieveTicketBtn" layoutX="444.0" layoutY="137.0" mnemonicParsing="false" text="Ticket" />
+                        <Button fx:id="retrieveTicketBtn" layoutX="444.0" layoutY="137.0" mnemonicParsing="false" onAction="#retrieveTicket" text="Search for Ticket" />
                         <Text fill="WHITE" layoutX="105.0" layoutY="237.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Theatre">
                            <font>
                               <Font size="15.0" />
@@ -157,127 +156,11 @@
                         <Text fx:id="ticketroom" fill="WHITE" layoutX="185.0" layoutY="293.0" strokeType="OUTSIDE" strokeWidth="0.0" />
                         <Text fx:id="ticketseat" fill="WHITE" layoutX="185.0" layoutY="324.0" strokeType="OUTSIDE" strokeWidth="0.0" />
                         <Text fx:id="tickettime" fill="WHITE" layoutX="185.0" layoutY="354.0" strokeType="OUTSIDE" strokeWidth="0.0" />
-                        <Button fx:id="ticketDeleteBtn" disable="true" layoutX="442.0" layoutY="379.0" mnemonicParsing="false" text="Delete Ticket" />
+                        <Button fx:id="ticketDeleteBtn" disable="true" layoutX="442.0" layoutY="379.0" mnemonicParsing="false" onAction="#deleteTicket" text="Delete Ticket" />
                         <Text fx:id="successfulTicketDlt" fill="#f80000" layoutX="139.0" layoutY="155.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="279.47003173828125" />
                      </children>
                   </Pane>
-                  <Pane fx:id="homePaneRegistered" prefHeight="576.0" prefWidth="950.0" style="-fx-background-color: #02030A;">
-                     <children>
-                        <Label layoutX="24.0" layoutY="194.0" minWidth="-Infinity" prefHeight="38.0" prefWidth="207.0" text="Now Playing" textFill="#2a73ff">
-                           <font>
-                              <Font name="System Bold" size="26.0" />
-                           </font>
-                        </Label>
-                        <Label layoutX="21.0" layoutY="30.0" text="Welcome to 123movies theatre!" textFill="#e7e5e5">
-                           <font>
-                              <Font size="24.0" />
-                           </font>
-                        </Label>
-                        <ScrollPane layoutX="14.0" layoutY="232.0" prefHeight="509.0" prefWidth="746.0" stylesheets="@homeguistyle.css">
-                           <content>
-                              <VBox fx:id="pnItems" prefHeight="318.0" prefWidth="744.0" spacing="5.0" style="-fx-background-color: #02030A;">
-                                 <padding>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                 </padding>
-                                 <children>
-                                    <HBox prefHeight="100.0" prefWidth="200.0">
-                                       <children>
-                                          <Label text="Avatar, The Way of Water                                          " textFill="WHITE">
-                                             <font>
-                                                <Font name="System Bold" size="19.0" />
-                                             </font>
-                                          </Label>
-                                          <Label text="Spiderman: No Way Home" textFill="WHITE">
-                                             <font>
-                                                <Font name="System Bold" size="19.0" />
-                                             </font>
-                                          </Label>
-                                       </children>
-                                    </HBox>
-                                    <HBox prefHeight="100.0" prefWidth="200.0">
-                                       <children>
-                                          <ImageView fitHeight="503.0" fitWidth="352.0">
-                                             <image>
-                                                <Image url="@../UserInterface/img/MV5BYjhiNjBlODctY2ZiOC00YjVlLWFlNzAtNTVhNzM1YjI1NzMxXkEyXkFqcGdeQXVyMjQxNTE1MDA@._V1_.jpg" />
-                                             </image>
-                                          </ImageView>
-                                          <ImageView fitHeight="504.0" fitWidth="336.0">
-                                             <image>
-                                                <Image url="@../UserInterface/img/MV5BZWMyYzFjYTYtNTRjYi00OGExLWE2YzgtOGRmYjAxZTU3NzBiXkEyXkFqcGdeQXVyMzQ0MzA0NTM@._V1_FMjpg_UX1000_.jpg" />
-                                             </image>
-                                          </ImageView>
-                                       </children>
-                                    </HBox>
-                                    <HBox prefHeight="100.0" prefWidth="200.0">
-                                       <children>
-                                          <Label text="Black Panther: Wakanda Forever                            " textFill="WHITE">
-                                             <font>
-                                                <Font name="System Bold" size="19.0" />
-                                             </font>
-                                          </Label>
-                                          <Label text="Puss In Boots: The Last Wish" textFill="WHITE">
-                                             <font>
-                                                <Font name="System Bold" size="19.0" />
-                                             </font>
-                                          </Label>
-                                       </children>
-                                    </HBox>
-                                    <HBox prefHeight="100.0" prefWidth="200.0">
-                                       <children>
-                                          <ImageView fitHeight="535.0" fitWidth="356.0">
-                                             <image>
-                                                <Image url="@../UserInterface/img/images.jpg" />
-                                             </image>
-                                          </ImageView>
-                                          <ImageView fitHeight="509.0" fitWidth="332.0">
-                                             <image>
-                                                <Image url="@../UserInterface/img/puss-in-boots-the-last-wish-poster-thumbnail2.jpg" />
-                                             </image>
-                                          </ImageView>
-                                       </children>
-                                    </HBox>
-                                 </children>
-                              </VBox>
-                           </content>
-                        </ScrollPane>
-                        <ScrollPane layoutX="24.0" layoutY="117.0" prefHeight="67.0" prefWidth="746.0" stylesheets="@homeguistyle.css">
-                           <content>
-                              <VBox fx:id="pnItems1" prefHeight="318.0" prefWidth="744.0" spacing="5.0" style="-fx-background-color: #02030A;">
-                                 <padding>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                 </padding>
-                                 <children>
-                                    <Label minWidth="-Infinity" prefHeight="38.0" prefWidth="625.0" text="Top Gun: The Finale gutted; Tom Cruise leaves production" textFill="WHITE">
-                                       <font>
-                                          <Font name="System Bold" size="16.0" />
-                                       </font>
-                                    </Label>
-                                    <Label minWidth="-Infinity" prefHeight="38.0" prefWidth="625.0" text="Joker 2: Electric Boogaloo out soon!" textFill="WHITE">
-                                       <font>
-                                          <Font name="System Bold" size="16.0" />
-                                       </font>
-                                    </Label>
-                                 </children>
-                              </VBox>
-                           </content>
-                        </ScrollPane>
-                        <ImageView fitHeight="38.0" fitWidth="38.0" layoutX="206.0" layoutY="69.0">
-                           <image>
-                              <Image url="@../UserInterface/img/KYmobBO.png" />
-                           </image>
-                        </ImageView>
-                        <ImageView fitHeight="107.0" fitWidth="115.0" layoutX="570.0" layoutY="16.0">
-                           <image>
-                              <Image url="@../UserInterface/img/film-reel-the-movies-owens-valley-12.png" />
-                           </image>
-                        </ImageView>
-                        <Label layoutX="23.0" layoutY="79.0" minWidth="-Infinity" prefHeight="38.0" prefWidth="207.0" text="Announcements" textFill="#2a73ff">
-                           <font>
-                              <Font name="System Bold" size="26.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </Pane>
+                  <Pane fx:id="userInfoPaneRegistered" prefHeight="200.0" prefWidth="200.0" />
                   <Pane fx:id="showtimePaneRegistered" minHeight="-Infinity" prefHeight="758.0" prefWidth="793.0" style="-fx-background-color: #02030A;">
                      <children>
                         <Text fill="WHITE" layoutX="24.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Currently Showing:">
@@ -372,6 +255,123 @@
                            </font>
                         </Text>
                         <Button fx:id="ticketPurchaseButtonRegistered" layoutX="25.0" layoutY="622.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="96.0" text="Button" />
+                     </children>
+                  </Pane>
+                  <Pane fx:id="homePaneRegistered" prefHeight="576.0" prefWidth="950.0" style="-fx-background-color: #02030A;">
+                     <children>
+                        <Label layoutX="24.0" layoutY="194.0" minWidth="-Infinity" prefHeight="38.0" prefWidth="207.0" text="Now Playing" textFill="#2a73ff">
+                           <font>
+                              <Font name="System Bold" size="26.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="21.0" layoutY="30.0" text="Welcome to 123movies theatre!" textFill="#e7e5e5">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                        <ScrollPane layoutX="14.0" layoutY="232.0" prefHeight="509.0" prefWidth="746.0" stylesheets="@homeguistyle.css">
+                           <content>
+                              <VBox fx:id="pnItems" prefHeight="318.0" prefWidth="744.0" spacing="5.0" style="-fx-background-color: #02030A;">
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                                 <children>
+                                    <HBox prefHeight="100.0" prefWidth="200.0">
+                                       <children>
+                                          <Label text="Avatar, The Way of Water                                          " textFill="WHITE">
+                                             <font>
+                                                <Font name="System Bold" size="19.0" />
+                                             </font>
+                                          </Label>
+                                          <Label text="Spiderman: No Way Home" textFill="WHITE">
+                                             <font>
+                                                <Font name="System Bold" size="19.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <HBox prefHeight="100.0" prefWidth="200.0">
+                                       <children>
+                                          <ImageView fitHeight="503.0" fitWidth="352.0">
+                                             <image>
+                                                <Image url="@../UserInterface/img/MV5BYjhiNjBlODctY2ZiOC00YjVlLWFlNzAtNTVhNzM1YjI1NzMxXkEyXkFqcGdeQXVyMjQxNTE1MDA@._V1_.jpg" />
+                                             </image>
+                                          </ImageView>
+                                          <ImageView fitHeight="504.0" fitWidth="336.0">
+                                             <image>
+                                                <Image url="@../UserInterface/img/MV5BZWMyYzFjYTYtNTRjYi00OGExLWE2YzgtOGRmYjAxZTU3NzBiXkEyXkFqcGdeQXVyMzQ0MzA0NTM@._V1_FMjpg_UX1000_.jpg" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                    </HBox>
+                                    <HBox prefHeight="100.0" prefWidth="200.0">
+                                       <children>
+                                          <Label text="Black Panther: Wakanda Forever                            " textFill="WHITE">
+                                             <font>
+                                                <Font name="System Bold" size="19.0" />
+                                             </font>
+                                          </Label>
+                                          <Label text="Puss In Boots: The Last Wish" textFill="WHITE">
+                                             <font>
+                                                <Font name="System Bold" size="19.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <HBox prefHeight="100.0" prefWidth="200.0">
+                                       <children>
+                                          <ImageView fitHeight="535.0" fitWidth="356.0">
+                                             <image>
+                                                <Image url="@../UserInterface/img/images.jpg" />
+                                             </image>
+                                          </ImageView>
+                                          <ImageView fitHeight="509.0" fitWidth="332.0">
+                                             <image>
+                                                <Image url="@../UserInterface/img/puss-in-boots-the-last-wish-poster-thumbnail2.jpg" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </content>
+                        </ScrollPane>
+                        <ScrollPane fx:id="scrollerNews" layoutX="24.0" layoutY="117.0" prefHeight="67.0" prefWidth="746.0" stylesheets="@homeguistyle.css">
+                           <content>
+                              <VBox fx:id="pnItems1" prefHeight="318.0" prefWidth="744.0" spacing="5.0" style="-fx-background-color: #02030A;">
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                                 <children>
+                                    <Label minWidth="-Infinity" prefHeight="38.0" prefWidth="625.0" text="Top Gun: The Finale gutted; Tom Cruise leaves production" textFill="WHITE">
+                                       <font>
+                                          <Font name="System Bold" size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <Label minWidth="-Infinity" prefHeight="38.0" prefWidth="625.0" text="Joker 2: Electric Boogaloo out soon!" textFill="WHITE">
+                                       <font>
+                                          <Font name="System Bold" size="16.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                           </content>
+                        </ScrollPane>
+                        <ImageView fx:id="announcementNotificationImg" fitHeight="38.0" fitWidth="38.0" layoutX="206.0" layoutY="69.0">
+                           <image>
+                              <Image url="@../UserInterface/img/KYmobBO.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="107.0" fitWidth="115.0" layoutX="570.0" layoutY="16.0">
+                           <image>
+                              <Image url="@../UserInterface/img/film-reel-the-movies-owens-valley-12.png" />
+                           </image>
+                        </ImageView>
+                        <Label fx:id="AnnouncementsTitle" layoutX="23.0" layoutY="79.0" minWidth="-Infinity" prefHeight="38.0" prefWidth="207.0" text="Announcements" textFill="#2a73ff">
+                           <font>
+                              <Font name="System Bold" size="26.0" />
+                           </font>
+                        </Label>
                      </children>
                   </Pane>
                </children>
