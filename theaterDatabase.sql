@@ -148,7 +148,8 @@ CREATE TABLE IF NOT EXISTS "user" (
 	"username" TEXT,
 	"email" TEXT,
 	"password" TEXT,
-	"registered" BIT
+	"registered" BIT,
+	"credit" TEXT
 );
 
 COMMIT;

@@ -33,11 +33,6 @@ public class Ticket {
         this.time = time;
     }
 
-    // Methods
-    public void sendEmail(){
-
-    }
-
     public boolean isRefundable() {
         LocalDateTime time = this.time.minusHours(72);
         return LocalDateTime.now().isBefore(time);

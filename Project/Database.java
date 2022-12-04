@@ -115,7 +115,6 @@ public class Database {
         return theaters.get("Theater480");
     }
 
-
     // Ticket objects
     public Ticket findTicket(String ticket_id, String email) {
         Ticket ticket = null;
@@ -195,9 +194,9 @@ public class Database {
     }
 
     // User Database Interactions
-    public void addUserToDatabase(String username, String password, String email, boolean registered) throws SQLException {
+    public void addUserToDatabase(String username, String password, String email, boolean registered, String credit) throws SQLException {
         int registeredBit = (registered == true) ? 1 : 0;
-        String query = "INSERT INTO \"user\" VALUES ('" + username + "', '" + email + "', '" + password + "', " + registeredBit + ");";
+        String query = "INSERT INTO \"user\" VALUES ('" + username + "', '" + email + "', '" + password + "', " + registeredBit + ", "+ credit +");";
         Statement statement = connection.createStatement();
         statement.executeUpdate(query);
         statement.close();
@@ -219,7 +218,7 @@ public class Database {
     }
 
     public void populateUserArray(List<User> users) throws SQLException {
-        String query = "SELECT username, email, password, registered FROM user";
+        String query = "SELECT username, email, password, registered, credit FROM user";
         Statement statement  = connection.createStatement();
         ResultSet rs = statement.executeQuery(query);
 
@@ -228,9 +227,10 @@ public class Database {
             String email = rs.getString("email");
             String password = rs.getString("password");
             int registered = rs.getInt("registered");
+            String credit = rs.getString("credit");
             
             if (registered == 1) {
-                User newUser = new RegisteredUser(username, password, email);
+                User newUser = new RegisteredUser(username, password, email, credit);
                 users.add(newUser);
             }
             else {
