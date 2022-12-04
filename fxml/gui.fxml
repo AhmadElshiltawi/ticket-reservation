@@ -146,6 +146,11 @@
                         <Text fx:id="tickettime" fill="WHITE" layoutX="185.0" layoutY="354.0" strokeType="OUTSIDE" strokeWidth="0.0" />
                         <Button fx:id="ticketDeleteBtn" disable="true" layoutX="442.0" layoutY="379.0" mnemonicParsing="false" onAction="#deleteTicket" text="Delete Ticket" />
                         <Text fx:id="successfulTicketDlt" fill="#f80000" layoutX="139.0" layoutY="155.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="279.47003173828125" />
+                        <Text fx:id="refundPrice" fill="WHITE" layoutX="418.0" layoutY="426.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="180.17578404396772">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Text>
                      </children>
                   </Pane>
                   <Pane fx:id="seatSelectPane" minHeight="-Infinity" prefHeight="758.0" prefWidth="793.0" style="-fx-background-color: #02030A;">
@@ -191,7 +196,7 @@
                         <Button fx:id="seatB2" layoutX="202.0" layoutY="371.0" mnemonicParsing="false" onAction="#changeSeatB2" prefHeight="35.0" prefWidth="48.0" text="B2" />
                         <Button fx:id="seatB3" layoutX="295.0" layoutY="371.0" mnemonicParsing="false" onAction="#changeSeatB3" prefHeight="35.0" prefWidth="48.0" text="B3" />
                         <Button fx:id="seatB4" layoutX="430.0" layoutY="371.0" mnemonicParsing="false" onAction="#changeSeatB4" prefHeight="35.0" prefWidth="48.0" text="B4" />
-                        <Button fx:id="seatB5" layoutX="239.0" layoutY="463.0" mnemonicParsing="false" onAction="#changeSeatB5VIP" prefHeight="51.0" prefWidth="67.0" text="B5" />
+                        <Button fx:id="seatB5" layoutX="239.0" layoutY="463.0" mnemonicParsing="false" onAction="#changeSeatB5VIP" prefHeight="51.0" prefWidth="67.0" style="-fx-background-color: #d4af37;" text="B5" />
                         <Button fx:id="continueToPaymentBtn" layoutX="549.0" layoutY="621.0" mnemonicParsing="false" onAction="#continueToPayment" prefHeight="42.0" prefWidth="138.0" text="Continue to Payment" />
                         <Text fill="WHITE" layoutX="24.0" layoutY="100.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Seat Selection for: ">
                            <font>
@@ -218,7 +223,7 @@
                            </image>
                         </ImageView>
                         <TextField fx:id="creditCardField" layoutX="38.0" layoutY="111.0" prefHeight="25.0" prefWidth="321.0" promptText="Credit Card Number" />
-                        <Text fx:id="wasPurchaseSuccessful" fill="RED" layoutX="34.0" layoutY="309.0" strokeType="OUTSIDE" strokeWidth="0.0" text="TicketPurchase" wrappingWidth="431.96087646484375">
+                        <Text fx:id="wasPurchaseSuccessful" fill="RED" layoutX="34.0" layoutY="309.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="431.96087646484375">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -242,29 +247,34 @@
                         </Text>
                         <Pane fx:id="ticketPopupPane" layoutX="136.0" layoutY="323.0" prefHeight="325.0" prefWidth="494.0" style="-fx-background-color: #FFFFFF;" visible="false">
                            <children>
-                              <Text layoutX="40.0" layoutY="39.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ticket ID:" wrappingWidth="414.1368408203125">
+                              <ImageView fitHeight="334.0" fitWidth="505.0" layoutX="-6.0" layoutY="-9.0">
+                                 <image>
+                                    <Image url="@../UserInterface/img/movie_theater_clip_art_borders_clipart_free_clipar_by_tomytje_dc0h2a6-fullview.jpg" />
+                                 </image>
+                              </ImageView>
+                              <Text layoutX="79.0" layoutY="172.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ticket ID:" wrappingWidth="414.1368408203125">
                                  <font>
                                     <Font size="23.0" />
                                  </font>
                               </Text>
-                              <Text layoutX="40.0" layoutY="87.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email:" wrappingWidth="414.1368408203125">
+                              <Text layoutX="79.0" layoutY="218.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email:" wrappingWidth="414.1368408203125">
                                  <font>
                                     <Font size="23.0" />
                                  </font>
                               </Text>
-                              <Text layoutX="40.0" layoutY="136.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Receipt has been Emailed to you!" wrappingWidth="414.1368408203125">
+                              <Text layoutX="63.0" layoutY="262.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The receipt and ticket have been emailed to you!" wrappingWidth="397.4700927734375">
                                  <font>
-                                    <Font size="23.0" />
+                                    <Font name="System Italic" size="17.0" />
                                  </font>
                               </Text>
-                              <Text fx:id="ticketOutput" layoutX="148.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ticket ID:" wrappingWidth="414.1368408203125">
+                              <Text fx:id="ticketOutput" layoutX="177.0" layoutY="170.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ticket ID:" wrappingWidth="235.51416444778442">
                                  <font>
-                                    <Font size="23.0" />
+                                    <Font size="14.0" />
                                  </font>
                               </Text>
-                              <Text fx:id="emailOutput" layoutX="109.0" layoutY="87.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ticket ID:" wrappingWidth="414.1368408203125">
+                              <Text fx:id="emailOutput" layoutX="144.0" layoutY="217.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ticket ID:" wrappingWidth="255.9999999059255">
                                  <font>
-                                    <Font size="23.0" />
+                                    <Font size="14.0" />
                                  </font>
                               </Text>
                            </children>

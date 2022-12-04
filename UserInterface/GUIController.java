@@ -178,6 +178,7 @@ public class GUIController {
     HashMap<String, Seat> seats;
 
     
+
     private Movie getMovie(){
         return Database.getInstance().getTheater().getMovie(movieChoiceBoxRegistered.getValue());
     }
@@ -243,8 +244,6 @@ public class GUIController {
                 break;
             case "b5":
                 seatB5.setDisable(tf);
-                seatB5.setStyle("-fx-background-color:#d4af37;");
-                seatB5.setStyle("-fx-border-color:#d4af37;");
 
                 break;
                 
@@ -259,11 +258,14 @@ public class GUIController {
     @FXML
     void changePanelHome(ActionEvent event) {
         homePaneRegistered.toFront();
+        
     }
 
     @FXML
     void changePanelSearchMovies(ActionEvent event) {
         showtimePaneRegistered.toFront();
+        seatB5.setStyle("-fx-background-color:#d4af37;");
+        seatB5.setStyle("-fx-border-color:#d4af37;");
         populateDropdownMovies();
     }
 
@@ -518,12 +520,6 @@ public class GUIController {
     }
 
 
-
-    @FXML
-    void nextFromCurrentlyShowing(ActionEvent event) {
-
-    }
-
     @FXML
     void returnFromPayment(ActionEvent event) {
         seatSelectPane.toFront();
@@ -544,12 +540,42 @@ public class GUIController {
         else{
             System.out.println("meow");
         }
+
+        if(loggedInUser != null){
+            EmailFieldPayment.setText(loggedInUser.getEmail());
+            // TODO PLEASE IMPLEMENT CREDIT CARD PASSED INTO THIS FUNCTION: MUST USE REGISTEREDUSER WE COULDNT FIGURE IT OUT w WHAT U HAD TY
+        }
        
 
     }
     @FXML
     void ticketPurchase(ActionEvent event) {
-
+        
+        if(creditCardField.getText().isEmpty()){
+            wasPurchaseSuccessful.setText("Please enter your credit card Number.");
+            return;
+        }
+        if(!Payment.validateCard(creditCardField.getText())){
+            wasPurchaseSuccessful.setText("Please enter your credit card Number.. CORRECTLY :)");
+            return;
+        }
+        if(EmailFieldPayment.getText().isEmpty()){
+            wasPurchaseSuccessful.setText("Please enter your email.");
+            return;
+        }
+        if(!UserEntrySingleton.validateEmail(EmailFieldPayment.getText())){
+            wasPurchaseSuccessful.setText("Please enter your email... CORRECTLY >:(");
+            return;
+        }
+        else{
+            wasPurchaseSuccessful.setFill(Color.GREEN);
+            wasPurchaseSuccessful.setText("Thank you for your purchase!");
+            ticketPopupPane.setVisible(true);
+            emailOutput.setText(EmailFieldPayment.getText());
+            ticketOutput.setText("Placeholder ID");
+        }
+        
+         
     }
 
 

@@ -10,7 +10,7 @@ public class UserEntrySingleton {
     static Database db;
     
     private static final String EMAIL_REGEX = "([a-zA-Z0-9]+(?:[._+-][a-zA-Z0-9]+)*)@([a-zA-Z0-9]+(?:[.-][a-zA-Z0-9]+)*[.][a-zA-Z]{2,})";
-    private Pattern emailPattern = Pattern.compile(EMAIL_REGEX);
+    private static Pattern emailPattern = Pattern.compile(EMAIL_REGEX);
 
     // instagram username regex
     private static final String USERNAME_REGEX = "^(?=.{8,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$";
@@ -63,7 +63,7 @@ public class UserEntrySingleton {
         return null;
     }
 
-    private boolean validateEmail(String email) {
+    public static boolean validateEmail(String email) {
         return emailPattern.matcher(email).matches();
     }
 
