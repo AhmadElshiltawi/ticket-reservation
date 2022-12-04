@@ -9,6 +9,8 @@ import Entry.*;
 import Theatre.*;
 import Project.*;
 import Payment.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -152,7 +154,7 @@ public class GUIController {
     private Pane showtimePaneRegistered;
 
     @FXML
-    private ChoiceBox<String> movieChoiceBoxRegistered;
+    private ChoiceBox<Movie> movieChoiceBoxRegistered;
 
     @FXML
     private ChoiceBox<?> showtimeChoiceBoxRegistered;
@@ -221,11 +223,13 @@ public class GUIController {
     }
 
     void populateDropdownMovies(){
+        ObservableList<Movie> list = FXCollections.observableArrayList();
         Database db = Database.getInstance();
         Theater t = db.getTheater();
         for( Map.Entry<String, Movie> m : t.getMovies().entrySet() ){
-            movieChoiceBoxRegistered.setItems(m.getKey());
+            list.add(m.getValue());
         }
+        movieChoiceBoxRegistered.setItems(list);
         
     }
 
