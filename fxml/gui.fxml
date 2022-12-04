@@ -161,7 +161,7 @@
                      </children>
                   </Pane>
                   <Pane fx:id="userInfoPaneRegistered" prefHeight="200.0" prefWidth="200.0" />
-                  <Pane fx:id="showtimePaneRegistered2" minHeight="-Infinity" prefHeight="758.0" prefWidth="793.0" style="-fx-background-color: #02030A;">
+                  <Pane fx:id="seatSelectPane" minHeight="-Infinity" prefHeight="758.0" prefWidth="793.0" style="-fx-background-color: #02030A;">
                      <children>
                         <Text fill="#f4f4f4" layoutX="400.0" layoutY="255.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Seat Layout:">
                            <font>
@@ -272,7 +272,7 @@
                               <Image url="@../UserInterface/img/download.png" />
                            </image>
                         </ImageView>
-                        <Button fx:id="currentlyShowingNextBtn" layoutX="416.0" layoutY="222.0" mnemonicParsing="false" onAction="#nextFromCurrentlyShowing" prefHeight="42.0" prefWidth="96.0" text="Select Seat" />
+                        <Button fx:id="seatSelectNextBtn" disable="true" layoutX="416.0" layoutY="222.0" mnemonicParsing="false" onAction="#seatSelect" prefHeight="42.0" prefWidth="96.0" text="Select Seat" />
                         <ImageView fitHeight="289.0" fitWidth="567.0" layoutX="113.0" layoutY="334.0">
                            <image>
                               <Image url="@../UserInterface/img/thumb_2ABA56A4-AA19-4439-BDAE-87BDAC794A69.jpg" />

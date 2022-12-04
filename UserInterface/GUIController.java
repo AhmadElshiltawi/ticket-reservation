@@ -151,6 +151,10 @@ public class GUIController {
     private Label signUpSuccessfulLabel;
     @FXML
     private TextField newUsername;
+    @FXML
+    private Button seatSelectNextBtn;
+    @FXML
+    private Pane seatSelectPane;
 
     // Local Variables
     private UserEntrySingleton userSingleton;
@@ -171,6 +175,13 @@ public class GUIController {
             return getMovie().getShowtime(room, time);
         }
         return null;
+    }
+
+    @FXML
+    void seatSelect(ActionEvent event) {
+        Movie mov = getMovie();
+        seatSelectPane.toFront();
+        movieSeatselectlable.setText(mov.getTitle());
     }
 
     @FXML
@@ -196,6 +207,7 @@ public class GUIController {
     }
 
     void populateDropdownShowtimes(ActionEvent event) {
+        try {
         ObservableList<String> list2 = FXCollections.observableArrayList();
         Database db = Database.getInstance();
         Theater theater = db.getTheater();
@@ -203,6 +215,10 @@ public class GUIController {
         for(Showtime s : movie.getShowtimes() )
             list2.add("room " + s.getRoomNumber() + " : time " + s.getTime().toString());
         showtimeChoiceBoxRegistered.setItems(list2);
+        } catch (Exception e) {
+            showtimeChoiceBoxRegistered.setItems(FXCollections.observableArrayList());
+        }
+        
     }
 
     @FXML
@@ -412,9 +428,6 @@ public class GUIController {
 
     @FXML
     void returnToMovieSearch(ActionEvent event) {
-
+        showtimePaneRegistered.toFront();
     }
-
-
-
 }
