@@ -245,9 +245,9 @@ public class GUIController {
     @FXML
     void continueUnregistered(ActionEvent event) throws IOException {
         loginHome.setVisible(false);
-        unregisteredUserHome.setDisable(false);
-        unregisteredUserHome.setVisible(true);
-        registeredUserHome.setDisable(true);
+        registeredUserHome.setDisable(false);
+        registeredUserHome.setVisible(true);
+        userLoggedInShowField.setText("Guest");
         loggedInUser = null;
         
     }

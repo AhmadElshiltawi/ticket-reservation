@@ -22,8 +22,6 @@ public class LoginGUI extends Application {
         primaryStage.show();
 
     }
-    
-
     public static void main(String[] args) { //this just runs the gui
         launch(args);
     }
