@@ -12,10 +12,7 @@ public class Seat {
         this.memberOnly = memberOnly;
         this.isBooked= isBooked;
     }
-
-    // Methods
-    
-
+ 
     // Getters Setters
     public String getId() {
         return id;

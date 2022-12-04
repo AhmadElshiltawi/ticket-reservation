@@ -14,10 +14,12 @@ public class Movie {
     }
 
     // Methods
+    // Add a unique showtime object to the list
     public void addShowtime(Showtime showtime) {
         if(!showtimes.contains(showtime))
             showtimes.add(showtime);
     }
+    // Get the showtime object thats inside the arraylist
     public Showtime getShowtime(Showtime showtime) {
         for(Showtime s : showtimes){
             if(s.equals(showtime))
@@ -26,7 +28,7 @@ public class Movie {
         System.out.println("Error showtime not found!");
         return showtime;
     }
-    
+    // Get the showtime object that matches the room number and time
     public Showtime getShowtime(int num, LocalDateTime time) {
         for(Showtime s : showtimes){
             if(s.getRoomNumber() == num && s.getTime().isEqual(time))

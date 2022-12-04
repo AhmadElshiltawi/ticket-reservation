@@ -2,7 +2,8 @@ package Entry;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.regex.Pattern;
-import Project.Database;
+
+import Database.Database;
 
 public class UserEntrySingleton {
     private static UserEntrySingleton instance = null;

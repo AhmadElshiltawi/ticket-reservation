@@ -16,6 +16,7 @@ public class Showtime {
     }
 
     // Methods
+    // Adds a seat to the showroom
     public void add(Seat seat){
         seats.put(seat.getId(), seat);
     }

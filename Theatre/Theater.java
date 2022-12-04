@@ -14,9 +14,11 @@ public class Theater {
     }
     
     // Methods
+    // Will return a Movie object for a valid name, otherwise will return null
     public Movie getMovie(String name) {
         return movies.get(name);
     }
+    // Will add a movie object to the list of movies if its unique
     public void addMovie(Movie movie) {
         if(!movies.containsKey(movie.getTitle())){
             movies.put(movie.getTitle(), movie);

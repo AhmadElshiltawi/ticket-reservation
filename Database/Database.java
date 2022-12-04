@@ -1,9 +1,7 @@
-package Project;
+package Database;
 import java.sql.*;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import Entry.*;
 import Payment.Ticket;
@@ -32,7 +30,7 @@ public class Database {
             db = new Database();
         return db;   
     }
-    
+    // Close the single instance of the connection
     public static void closeALLConnections(){
         try {
             db.connection.close();
@@ -43,6 +41,7 @@ public class Database {
     }
     
     // Seats and Theater object from database
+    // Make seat available or unavailable to book
     public int updateSeatAvailability(String theater, String movie, int room, LocalDateTime time, String seat, boolean isBooked){
         int update = -1;
         try {
@@ -69,7 +68,7 @@ public class Database {
         }
         return update;
     }
-
+    // Check if a seat is currently available to book
     public boolean getSeatAvailability(String theater, String movie, int room, LocalDateTime time, String seat){
         boolean booked = true;
         try {
@@ -98,8 +97,7 @@ public class Database {
         }
         return booked;
     }
-    
-
+    // Get a theater object populated with the theaters information including seats
     public Theater getTheater(){
         HashMap<String, Theater> theaters = new HashMap<>();
         try {
@@ -149,6 +147,7 @@ public class Database {
     }
 
     // Ticket objects
+    // Gets a ticket from the database if its found
     public Ticket findTicket(String ticket_id, String email) {
         Ticket ticket = null;
         try {
@@ -174,7 +173,7 @@ public class Database {
         }
         return ticket;
     }
-
+    // Add a unique ticket
     public boolean addTicket(Ticket ticket) {
         boolean added = false;
         String id = ticket.getId();
@@ -205,7 +204,7 @@ public class Database {
         }
         return added;
     }
-
+    // Remove ticket
     public boolean removeTicket(String id, String email){
         boolean removed = false;
         if( findTicket(id, email) != null)

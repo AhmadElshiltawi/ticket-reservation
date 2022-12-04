@@ -12,7 +12,7 @@ public class Ticket {
     private String seat;
     private LocalDateTime time;
 
-    // Constructor
+    // Constructors
     public Ticket(String theater, String movie, String email, int room, String seat, LocalDateTime time) {
         this.theater = theater;
         this.movie = movie;
@@ -32,6 +32,8 @@ public class Ticket {
         this.time = time;
     }
 
+    // Methods
+    // Checks if a ticket is refundable
     public boolean isRefundable() {
         LocalDateTime time = this.time.minusHours(72);
         return LocalDateTime.now().isBefore(time);

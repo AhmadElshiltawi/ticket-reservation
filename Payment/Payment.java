@@ -2,16 +2,16 @@ package Payment;
 
 import java.util.regex.*;
 
-import Project.Database;
+import Database.Database;
 
 public class Payment {
+    // Checks to see if credit card is valid
     public static boolean validateCard(String credit) {
-        //credit = credit.replaceAll("[^\\d]", "");
         Pattern pattern = Pattern.compile("\\b\\d{16,16}$");
         Matcher matcher = pattern.matcher(credit);
         return matcher.find();
     }
-
+    // Process a return given a ticket and strategy. Cannot return twice
     public static double processReturn(Ticket ticket, CostStrategy strategy) {
 
         Database db = Database.getInstance();
@@ -29,7 +29,7 @@ public class Payment {
                     return strategy.refund();            
         return 0;
     }
-
+    // Process Sale given a ticket, credit card and strategy. Cannot get seat thats already booked
     public static double processSale(Ticket ticket,  String credit, CostStrategy strategy) {
         Database db = Database.getInstance();
         String id = ticket.getId();
@@ -50,9 +50,4 @@ public class Payment {
         }       
         return 0;
     }
-
-    public static void main(String[] args) {
-        System.out.println(Payment.validateCard("1234-5678-1234-1234"));
-    }
-
 }
