@@ -154,7 +154,7 @@ public class GUIController {
     private Pane showtimePaneRegistered;
 
     @FXML
-    private ChoiceBox<Movie> movieChoiceBoxRegistered;
+    private ChoiceBox<String> movieChoiceBoxRegistered;
 
     @FXML
     private ChoiceBox<?> showtimeChoiceBoxRegistered;
@@ -223,11 +223,11 @@ public class GUIController {
     }
 
     void populateDropdownMovies(){
-        ObservableList<Movie> list = FXCollections.observableArrayList();
+        ObservableList<String> list = FXCollections.observableArrayList();
         Database db = Database.getInstance();
         Theater t = db.getTheater();
         for( Map.Entry<String, Movie> m : t.getMovies().entrySet() ){
-            list.add(m.getValue());
+            list.add(m.getKey());
         }
         movieChoiceBoxRegistered.setItems(list);
         
