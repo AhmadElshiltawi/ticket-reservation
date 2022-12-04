@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -124,6 +125,8 @@ public class GUIController {
     @FXML
     private VBox pnItems;
     @FXML
+    private Text seatNo;
+    @FXML
     private ScrollPane scrollerNews;
     @FXML
     private VBox pnItems1;
@@ -159,6 +162,8 @@ public class GUIController {
     // Local Variables
     private UserEntrySingleton userSingleton;
     private User loggedInUser = null;
+    Seat seat;
+    HashMap<String, Seat> seats;
 
     
     private Movie getMovie(){
@@ -180,8 +185,63 @@ public class GUIController {
     @FXML
     void seatSelect(ActionEvent event) {
         Movie mov = getMovie();
+        Showtime showtime = getShowtime();
+        seats = showtime.getSeats();
+        if(loggedInUser == null){
+            seatB5.setDisable(true);
+        }
+        
+        for( Map.Entry<String, Seat> seat : seats.entrySet()){
+            seatAssignmentHelper(seat.getKey(), seat.getValue().getIsBooked());
+        }
+        showtime.getRoomNumber();
         seatSelectPane.toFront();
         movieSeatselectlable.setText(mov.getTitle());
+
+    }
+
+    void seatAssignmentHelper(String s, boolean tf){
+        switch (s) {
+            case "a1":
+                seatA1.setDisable(tf);
+                break;
+            case "a2":
+                seatA2.setDisable(tf);
+                break;
+            case "a3":
+                seatA3.setDisable(tf);
+                break;
+            case "a4":
+                seatA4.setDisable(tf);
+                break;
+            case "a5":
+                seatA5.setDisable(tf);
+                break;
+            case "b1":
+                seatB1.setDisable(tf);
+                break;
+            case "b2":
+                seatB2.setDisable(tf);
+                break;
+            case "b3":
+                seatB3.setDisable(tf);
+                break;
+            case "b4":
+                seatB4.setDisable(tf);
+                break;
+            case "b5":
+                seatB5.setDisable(tf);
+                seatB5.setStyle("-fx-background-color:#d4af37;");
+                seatB5.setStyle("-fx-border-color:#d4af37;");
+
+                break;
+                
+            
+            
+            default:
+
+                break;
+        }
     }
 
     @FXML
@@ -196,6 +256,7 @@ public class GUIController {
     }
 
     void populateDropdownMovies(){
+        seatSelectNextBtn.setDisable(true);
         ObservableList<String> list = FXCollections.observableArrayList();
         Database db = Database.getInstance();
         Theater t = db.getTheater();
@@ -204,19 +265,35 @@ public class GUIController {
         }
         movieChoiceBoxRegistered.setItems(list);
         movieChoiceBoxRegistered.setOnAction(this::populateDropdownShowtimes);
+        
+    }
+
+    void activateSeatSelection(ActionEvent event){
+        
+        if(showtimeChoiceBoxRegistered.getValue() ==  null){
+            seatSelectNextBtn.setDisable(true);
+        }
+        else{
+            seatSelectNextBtn.setDisable(false);
+        }
+        
     }
 
     void populateDropdownShowtimes(ActionEvent event) {
         try {
+        seatSelectNextBtn.setDisable(true);
         ObservableList<String> list2 = FXCollections.observableArrayList();
         Database db = Database.getInstance();
         Theater theater = db.getTheater();
         Movie movie = theater.getMovie(movieChoiceBoxRegistered.getValue());
         for(Showtime s : movie.getShowtimes() )
             list2.add("room " + s.getRoomNumber() + " : time " + s.getTime().toString());
+        
         showtimeChoiceBoxRegistered.setItems(list2);
+        showtimeChoiceBoxRegistered.setOnAction(this::activateSeatSelection);
         } catch (Exception e) {
             showtimeChoiceBoxRegistered.setItems(FXCollections.observableArrayList());
+            seatSelectNextBtn.setDisable(true);
         }
         
     }
@@ -368,53 +445,64 @@ public class GUIController {
 
     @FXML
     void changeSeatA1(ActionEvent event) {
-
+        seat = seats.get("a1");
+        seatNo.setText("a1");
     }
-
     @FXML
     void changeSeatA2(ActionEvent event) {
-
+        seat = seats.get("a2");
+        seatNo.setText("a2");
     }
 
     @FXML
     void changeSeatA3(ActionEvent event) {
-
+        seat = seats.get("a3");
+        seatNo.setText("a3");
     }
 
     @FXML
     void changeSeatA4(ActionEvent event) {
-
+        seat = seats.get("a4");
+        seatNo.setText("a4");
     }
 
     @FXML
     void changeSeatA5(ActionEvent event) {
-
+        seat = seats.get("a5");
+        seatNo.setText("a5");
     }
 
     @FXML
     void changeSeatB1(ActionEvent event) {
-
+        seat = seats.get("b1");
+        seatNo.setText("b1");
     }
 
     @FXML
     void changeSeatB2(ActionEvent event) {
-
+        seat = seats.get("b2");
+        seatNo.setText("b2");
     }
 
     @FXML
     void changeSeatB3(ActionEvent event) {
-
+        seat = seats.get("b3");
+        seatNo.setText("b3");
     }
 
     @FXML
     void changeSeatB4(ActionEvent event) {
-
+        seat = seats.get("b4");
+        seatNo.setText("b4");
     }
 
     @FXML
     void changeSeatB5VIP(ActionEvent event) {
-
+        seat = seats.get("b5");
+        seatNo.setText("b5");
     }
+
+
 
     @FXML
     void nextFromCurrentlyShowing(ActionEvent event) {
@@ -430,4 +518,12 @@ public class GUIController {
     void returnToMovieSearch(ActionEvent event) {
         showtimePaneRegistered.toFront();
     }
+
+    
+    @FXML
+    void continueToPayment(ActionEvent event) {
+
+    }
+
+
 }
