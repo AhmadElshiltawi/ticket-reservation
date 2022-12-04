@@ -13,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.ScrollPane;
@@ -33,41 +34,10 @@ public class GUIController {
 
     private User loggedInUser = null;
     @FXML
-    private ScrollPane scrollerNews;
-    @FXML
-    private ImageView announcementNotificationImg;
-    @FXML
-    private Label AnnouncementsTitle;
-
-    @FXML
-    private Button homeBtnUnregistered;
-
-    @FXML
-    private Button ticketBtnUnregistered;
-
-    @FXML
-    private Button showtimeBtnUnregistered;
-
-    @FXML
-    private Button loginsignupBtnUnregistered;
-
-    @FXML
-    private Pane ticketPaneUnregistered;
-
-    @FXML
-    private Pane showtimePaneUnregistered;
-
-    @FXML
-    private Pane homePaneUnregistered;
-
-    @FXML
-    private VBox pnItems2;
-
-    @FXML
     private AnchorPane registeredUserHome;
 
     @FXML
-    private ImageView amogus;
+    private PasswordField newCreditCard;
 
     @FXML
     private Label userLoggedInShowField;
@@ -86,12 +56,6 @@ public class GUIController {
 
     @FXML
     private Button signoutBtn;
-
-    @FXML
-    private Pane userInfoPaneRegistered;
-
-    @FXML
-    private Pane showtimePaneRegistered;
 
     @FXML
     private Pane ticketPaneRegistered;
@@ -127,13 +91,91 @@ public class GUIController {
     private Text successfulTicketDlt;
 
     @FXML
+    private Pane userInfoPaneRegistered;
+
+    @FXML
+    private Pane showtimePaneRegistered2;
+
+    @FXML
+    private Button returnToMovieSearchBtn;
+
+    @FXML
+    private Text movieSeatselectlable;
+
+    @FXML
+    private Button seatA1;
+
+    @FXML
+    private Button seatA2;
+
+    @FXML
+    private Button seatA3;
+
+    @FXML
+    private Button seatA4;
+
+    @FXML
+    private Button seatA5;
+
+    @FXML
+    private Button seatB1;
+
+    @FXML
+    private Button seatB2;
+
+    @FXML
+    private Button seatB3;
+
+    @FXML
+    private Button seatB4;
+
+    @FXML
+    private Button seatB5;
+
+    @FXML
+    private Pane showtimePaneRegistered1;
+
+    @FXML
+    private TextField creditCardField;
+
+    @FXML
+    private Text ticketPrice;
+
+    @FXML
+    private Button ticketPurchaseButtonRegistered1;
+
+    @FXML
+    private Button backButtonPaymentPage;
+
+    @FXML
+    private Pane showtimePaneRegistered;
+
+    @FXML
+    private ChoiceBox<?> movieChoiceBoxRegistered;
+
+    @FXML
+    private ChoiceBox<?> showtimeChoiceBoxRegistered;
+
+    @FXML
+    private Button currentlyShowingNextBtn;
+
+    @FXML
     private Pane homePaneRegistered;
 
     @FXML
     private VBox pnItems;
 
     @FXML
+    private ScrollPane scrollerNews;
+
+    @FXML
     private VBox pnItems1;
+
+    @FXML
+    private ImageView announcementNotificationImg;
+
+    @FXML
+    private Label AnnouncementsTitle;
 
     @FXML
     private BorderPane loginHome;
@@ -216,7 +258,7 @@ public class GUIController {
     }
     @FXML
     void deleteTicket(ActionEvent event) {
-        Alert alert = new Alert(AlertType.ERROR, "Ticket Deleted.", ButtonType.CLOSE);
+        Alert alert = new Alert(AlertType.INFORMATION, "Ticket Deleted.", ButtonType.CLOSE);
             alert.showAndWait();
             if (alert.getResult() == ButtonType.CLOSE){
                 alert.close();
@@ -302,9 +344,12 @@ public class GUIController {
         if (newEmail.getText().isEmpty() && newPassword.getText().isEmpty()) {
             signUpSuccessfulLabel.setText("Please enter your email and password");
             signUpSuccessfulLabel.setTextFill(Color.RED);
+            if (newCreditCard.getText().isEmpty()){
+                signUpSuccessfulLabel.setText("Please enter your credit card");
+            }
         }
         else {
-            User newUser = userSingleton.addRegisteredUser(newUsername.getText(), newPassword.getText(), newEmail.getText());
+            User newUser = userSingleton.addRegisteredUser(newUsername.getText(), newPassword.getText(), newEmail.getText(), newCreditCard.getText());
             if (newUser == null) {
                 signUpSuccessfulLabel.setText("An error occurred! Please check your email and password");
                 signUpSuccessfulLabel.setTextFill(Color.RED);
@@ -318,5 +363,72 @@ public class GUIController {
             }
         }
     }
+
+    @FXML
+    void changeSeatA1(ActionEvent event) {
+
+    }
+
+    @FXML
+    void changeSeatA2(ActionEvent event) {
+
+    }
+
+    @FXML
+    void changeSeatA3(ActionEvent event) {
+
+    }
+
+    @FXML
+    void changeSeatA4(ActionEvent event) {
+
+    }
+
+    @FXML
+    void changeSeatA5(ActionEvent event) {
+
+    }
+
+    @FXML
+    void changeSeatB1(ActionEvent event) {
+
+    }
+
+    @FXML
+    void changeSeatB2(ActionEvent event) {
+
+    }
+
+    @FXML
+    void changeSeatB3(ActionEvent event) {
+
+    }
+
+    @FXML
+    void changeSeatB4(ActionEvent event) {
+
+    }
+
+    @FXML
+    void changeSeatB5VIP(ActionEvent event) {
+
+    }
+
+    @FXML
+    void nextFromCurrentlyShowing(ActionEvent event) {
+
+    }
+
+    @FXML
+    void returnFromPayment(ActionEvent event) {
+
+    }
+
+    @FXML
+    void returnToMovieSearch(ActionEvent event) {
+
+    }
+
+
 
 }

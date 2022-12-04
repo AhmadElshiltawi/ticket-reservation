@@ -6,7 +6,7 @@ import Project.Database;
 
 public class Payment {
     public static boolean validateCard(String credit) {
-        credit = credit.replaceAll("[^\\d]", "");
+        //credit = credit.replaceAll("[^\\d]", "");
         Pattern pattern = Pattern.compile("\\b\\d{16,16}$");
         Matcher matcher = pattern.matcher(credit);
         return matcher.find();
