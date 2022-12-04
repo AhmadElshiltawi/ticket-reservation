@@ -231,7 +231,7 @@ public class GUIController {
             list.add(m.getKey());
         }
         movieChoiceBoxRegistered.setItems(list);
-        
+        movieChoiceBoxRegistered.setOnAction(this::populateDropdownShowtimes);
     }
 
     void populateDropdownShowtimes(ActionEvent event) {
@@ -241,17 +241,6 @@ public class GUIController {
         ObservableList<Showtime> list2 = FXCollections.observableArrayList(movie.getShowtimes());
         showtimeChoiceBoxRegistered.setItems(list2);
     }
-
-            //Theater t = db.getTheater();
-        // for( Map.Entry<String, Movie> m : t.getMovies().entrySet() ){
-        //     for(Showtime s : m.getValue().getShowtimes() ) {
-        //         for(Map.Entry<String, Seat> x : s.getSeats().entrySet()) {
-        //             x.getValue().setBooked(true);
-        //             if(x.getValue().getIsMemberOnly())
-        //                 db.updateSeatAvailability(t.getName(), m.getValue().getTitle(), s, x.getValue());
-        //         }
-        //     }
-        // }
 
     @FXML
     void changePanelTickets(ActionEvent event) {
