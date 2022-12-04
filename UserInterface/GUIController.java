@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-
 import Entry.*;
 import Theatre.*;
 import Payment.*;
@@ -13,7 +12,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.chart.PieChart.Data;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.ImageView;
@@ -21,153 +19,52 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import java.util.regex.*;
-
 import Database.*;
 
 public class GUIController {
-    @FXML
-    private AnchorPane registeredUserHome;
-    @FXML
-    private PasswordField newCreditCard;
-    @FXML
-    private Label userLoggedInShowField;
-    @FXML
-    private Button homeBtn;
-    @FXML
-    private Button ticketBtn;
-    @FXML
-    private Button showtimeBtn;
-    @FXML
-    private Button userInfoBtnRegistered;
-    @FXML
-    private Button signoutBtn;
-    @FXML
-    private Pane ticketPaneRegistered;
-    @FXML
-    private TextField ticketid;
-    @FXML
-    private TextField ticketemail;
-    @FXML
-    private Text wasPurchaseSuccessful;
-    @FXML
-    private Button purchaseTicketBtn;
-    @FXML
-    private Pane ticketPopupPane;
-    @FXML
-    private Text ticketOutput;
-    @FXML
-    private Text emailOutput;
-    @FXML
-    private TextField EmailFieldPayment;
-    @FXML
-    private Button retrieveTicketBtn;
-    @FXML
-    private Text tickettheatre;
-    @FXML
-    private Text ticketmovie;
-    @FXML
-    private Text ticketroom;
-    @FXML
-    private Text ticketseat;
-    @FXML
-    private Text tickettime;
-    @FXML
-    private Button ticketDeleteBtn;
-    @FXML
-    private Text successfulTicketDlt;
-    @FXML
-    private Pane userInfoPaneRegistered;
-    @FXML
-    private Pane showtimePaneRegistered2;
-    @FXML
-    private Button returnToMovieSearchBtn;
-    @FXML
-    private Text movieSeatselectlable;
-    @FXML
-    private Button seatA1;
-    @FXML
-    private Button seatA2;
-    @FXML
-    private Button seatA3;
-    @FXML
-    private Button seatA4;
-    @FXML
-    private Button seatA5;
-    @FXML
-    private Button seatB1;
-    @FXML
-    private Button seatB2;
-    @FXML
-    private Button seatB3;
-    @FXML
-    private Button seatB4;
-    @FXML
-    private Button seatB5;
-    @FXML
-    private Pane paymentPane;
-    @FXML
-    private TextField creditCardField;
-    @FXML
-    private Text ticketPrice;
-    @FXML
-    private Button ticketPurchaseButtonRegistered1;
-    @FXML
-    private Button backButtonPaymentPage;
-    @FXML
-    private Pane showtimePaneRegistered;
-    @FXML
-    private ChoiceBox<String> movieChoiceBoxRegistered;
-    @FXML
-    private ChoiceBox<String> showtimeChoiceBoxRegistered;
-    @FXML
-    private Button currentlyShowingNextBtn;
-    @FXML
-    private Pane homePaneRegistered;
-    @FXML
-    private VBox pnItems;
-    @FXML
-    private Text seatNo;
-    @FXML
-    private ScrollPane scrollerNews;
-    @FXML
-    private VBox pnItems1;
-    @FXML
-    private ImageView announcementNotificationImg;
-    @FXML
-    private Label AnnouncementsTitle;
+    // FXML Components
     @FXML
     private BorderPane loginHome;
     @FXML
-    private TextField username;
+    private ScrollPane scrollerNews;
     @FXML
-    private PasswordField password;
+    private Pane ticketPaneRegistered,ticketPopupPane,userInfoPaneRegistered,showtimePaneRegistered2,paymentPane;
     @FXML
-    private Button loginbutton;
+    private Pane showtimePaneRegistered,seatSelectPane,homePaneRegistered;
     @FXML
-    private Button signUpButton;
+    private Button homeBtn, ticketBtn, showtimeBtn, userInfoBtnRegistered, signoutBtn, purchaseTicketBtn, retrieveTicketBtn;
     @FXML
-    private Button skipButton;
+    private Button ticketDeleteBtn, returnToMovieSearchBtn, ticketPurchaseButtonRegistered1, backButtonPaymentPage;
     @FXML
-    private PasswordField newPassword;
+    private Button currentlyShowingNextBtn ,seatSelectNextBtn ,loginbutton ,signUpButton ,skipButton;
     @FXML
-    private TextField newEmail;
+    private Button seatA1, seatA2, seatA3 ,seatA4 ,seatA5 ,seatB1 ,seatB2 ,seatB3 ,seatB4 , seatB5;
     @FXML
-    private Label signUpSuccessfulLabel;
+    private Text seatNo, ticketPrice, movieSeatselectlable, wasPurchaseSuccessful, ticketOutput, emailOutput;
     @FXML
-    private TextField newUsername;
+    private Text tickettheatre, ticketmovie, ticketroom, ticketseat, tickettime, successfulTicketDlt;
     @FXML
-    private Button seatSelectNextBtn;
+    private TextField ticketid, ticketemail, EmailFieldPayment, creditCardField, newUsername, newEmail, username;
     @FXML
-    private Pane seatSelectPane;
+    private PasswordField newCreditCard, password, newPassword;
+    @FXML
+    private AnchorPane registeredUserHome;
+    @FXML
+    private Label userLoggedInShowField, AnnouncementsTitle, signUpSuccessfulLabel;
+    @FXML
+    private ChoiceBox<String> movieChoiceBoxRegistered, showtimeChoiceBoxRegistered;
+    @FXML
+    private VBox pnItems, pnItems1;
+    @FXML
+    private ImageView announcementNotificationImg;
 
     // Local Variables
     private UserEntrySingleton userSingleton;
     private User loggedInUser = null;
     Seat seat;
     HashMap<String, Seat> seats;
-
     
-
+    // Helper Methods     
     private Movie getMovie(){
         return Database.getInstance().getTheater().getMovie(movieChoiceBoxRegistered.getValue());
     }
@@ -184,25 +81,7 @@ public class GUIController {
         return null;
     }
 
-    @FXML
-    void seatSelect(ActionEvent event) {
-        Movie mov = getMovie();
-        Showtime showtime = getShowtime();
-        seats = showtime.getSeats();
-        
-        for( Map.Entry<String, Seat> seat : seats.entrySet()){
-            if (loggedInUser == null){
-                seatB5.setDisable(true);
-            }
-            seatAssignmentHelper(seat.getKey(), seat.getValue().getIsBooked());
-        }
-        showtime.getRoomNumber();
-        seatSelectPane.toFront();
-        movieSeatselectlable.setText(mov.getTitle());
-
-    }
-
-    void seatAssignmentHelper(String s, boolean tf){
+    private void seatAssignmentHelper(String s, boolean tf){
         switch (s) {
             case "a1":
                 seatA1.setDisable(tf);
@@ -243,22 +122,8 @@ public class GUIController {
                 break;
         }
     }
-
-    @FXML
-    void changePanelHome(ActionEvent event) {
-        homePaneRegistered.toFront();
-        
-    }
-
-    @FXML
-    void changePanelSearchMovies(ActionEvent event) {
-        showtimePaneRegistered.toFront();
-        seatB5.setStyle("-fx-background-color:#d4af37;");
-        seatB5.setStyle("-fx-border-color:#d4af37;");
-        populateDropdownMovies();
-    }
-
-    void populateDropdownMovies(){
+    
+    private void populateDropdownMovies(){
         seatSelectNextBtn.setDisable(true);
         ObservableList<String> list = FXCollections.observableArrayList();
         Database db = Database.getInstance();
@@ -270,8 +135,8 @@ public class GUIController {
         movieChoiceBoxRegistered.setOnAction(this::populateDropdownShowtimes);
         
     }
-
-    void activateSeatSelection(ActionEvent event){
+    
+    private void activateSeatSelection(ActionEvent event){
         
         if(showtimeChoiceBoxRegistered.getValue() ==  null){
             seatSelectNextBtn.setDisable(true);
@@ -282,7 +147,7 @@ public class GUIController {
         
     }
 
-    void populateDropdownShowtimes(ActionEvent event) {
+    private void populateDropdownShowtimes(ActionEvent event) {
         try {
         seatSelectNextBtn.setDisable(true);
         ObservableList<String> list2 = FXCollections.observableArrayList();
@@ -299,6 +164,97 @@ public class GUIController {
             seatSelectNextBtn.setDisable(true);
         }
         
+    }
+
+    private void checkLogin() throws IOException, SQLException {
+        userSingleton = UserEntrySingleton.getInstance();
+        User user = userSingleton.validateAccount(username.getText().toString(), password.getText().toString());
+        GUI m = new GUI();
+
+        if (user == null) {
+            if (username.getText().isEmpty() && password.getText().isEmpty()) {
+                signUpSuccessfulLabel.setText("Please enter your username and password");
+                signUpSuccessfulLabel.setTextFill(Color.RED);
+            }
+            else {
+                signUpSuccessfulLabel.setText("Wrong username or password.");
+                signUpSuccessfulLabel.setTextFill(Color.RED);
+            }
+        }
+        else {
+            loggedInUser = user;
+            signUpSuccessfulLabel.setText("");
+            loginHome.setVisible(false);
+            loginHome.setDisable(true);
+            registeredUserHome.setDisable(false);
+            registeredUserHome.setVisible(true);
+            homePaneRegistered.toFront();
+            userLoggedInShowField.setText(username.getText());
+            AnnouncementsTitle.setVisible(true);
+            announcementNotificationImg.setVisible(true);
+            scrollerNews.setVisible(true);
+            
+        }
+    }
+
+    private void checkSignUpValidity() throws SQLException {
+        userSingleton = UserEntrySingleton.getInstance();
+        GUI m = new GUI();
+        
+        if (newEmail.getText().isEmpty() || newPassword.getText().isEmpty() || newCreditCard.getText().isEmpty() || 
+        !Payment.validateCard(newCreditCard.getText())) {
+            signUpSuccessfulLabel.setText("Please enter your details correctly.");
+            signUpSuccessfulLabel.setTextFill(Color.RED);
+        }
+        else {
+            User newUser = userSingleton.addRegisteredUser(newUsername.getText(), newPassword.getText(), newEmail.getText(), newCreditCard.getText());
+            if (newUser == null) {
+                signUpSuccessfulLabel.setText("An error occurred! Please check your email and password");
+                signUpSuccessfulLabel.setTextFill(Color.RED);
+            }
+            else {
+                signUpSuccessfulLabel.setText("Username registered!");
+                signUpSuccessfulLabel.setTextFill(Color.GREEN);
+                newUsername.clear();
+                newPassword.clear();
+                newEmail.clear();
+                newCreditCard.clear();
+            }
+        }
+    }
+
+
+    // Component press action events
+    @FXML
+    void seatSelect(ActionEvent event) {
+        Movie mov = getMovie();
+        Showtime showtime = getShowtime();
+        seats = showtime.getSeats();
+        
+        for( Map.Entry<String, Seat> seat : seats.entrySet()){
+            if (loggedInUser == null){
+                seatB5.setDisable(true);
+            }
+            seatAssignmentHelper(seat.getKey(), seat.getValue().getIsBooked());
+        }
+        showtime.getRoomNumber();
+        seatSelectPane.toFront();
+        movieSeatselectlable.setText(mov.getTitle());
+
+    }
+
+    @FXML
+    void changePanelHome(ActionEvent event) {
+        homePaneRegistered.toFront();
+        
+    }
+
+    @FXML
+    void changePanelSearchMovies(ActionEvent event) {
+        showtimePaneRegistered.toFront();
+        seatB5.setStyle("-fx-background-color:#d4af37;");
+        seatB5.setStyle("-fx-border-color:#d4af37;");
+        populateDropdownMovies();
     }
 
     @FXML
@@ -339,6 +295,7 @@ public class GUIController {
             }
         }
     }
+    
     // TODO delete ticket
     @FXML
     void deleteTicket(ActionEvent event) {
@@ -385,6 +342,7 @@ public class GUIController {
     void changePanelUserInfo(ActionEvent event) {
         userInfoPaneRegistered.toFront();
     }
+
     @FXML
     void userLogout(ActionEvent event) {
             loginHome.setVisible(true);
@@ -397,36 +355,7 @@ public class GUIController {
     void userLogin(ActionEvent event) throws IOException, SQLException {
         checkLogin();
     }
-    private void checkLogin() throws IOException, SQLException {
-        userSingleton = UserEntrySingleton.getInstance();
-        User user = userSingleton.validateAccount(username.getText().toString(), password.getText().toString());
-        GUI m = new GUI();
-
-        if (user == null) {
-            if (username.getText().isEmpty() && password.getText().isEmpty()) {
-                signUpSuccessfulLabel.setText("Please enter your username and password");
-                signUpSuccessfulLabel.setTextFill(Color.RED);
-            }
-            else {
-                signUpSuccessfulLabel.setText("Wrong username or password.");
-                signUpSuccessfulLabel.setTextFill(Color.RED);
-            }
-        }
-        else {
-            loggedInUser = user;
-            signUpSuccessfulLabel.setText("");
-            loginHome.setVisible(false);
-            loginHome.setDisable(true);
-            registeredUserHome.setDisable(false);
-            registeredUserHome.setVisible(true);
-            homePaneRegistered.toFront();
-            userLoggedInShowField.setText(username.getText());
-            AnnouncementsTitle.setVisible(true);
-            announcementNotificationImg.setVisible(true);
-            scrollerNews.setVisible(true);
-            
-        }
-    }
+        
     @FXML
     void continueUnregistered(ActionEvent event) throws IOException {
         loginHome.setVisible(false);
@@ -439,38 +368,12 @@ public class GUIController {
             announcementNotificationImg.setVisible(false);
             scrollerNews.setVisible(false);
             homePaneRegistered.toFront();
-        }
-        
-        
+        }    
     }
+    
     @FXML
     void signUp(ActionEvent event) throws SQLException {
         checkSignUpValidity();
-    }
-    private void checkSignUpValidity() throws SQLException {
-        userSingleton = UserEntrySingleton.getInstance();
-        GUI m = new GUI();
-        
-        if (newEmail.getText().isEmpty() || newPassword.getText().isEmpty() || newCreditCard.getText().isEmpty() || 
-        !Payment.validateCard(newCreditCard.getText())) {
-            signUpSuccessfulLabel.setText("Please enter your details correctly.");
-            signUpSuccessfulLabel.setTextFill(Color.RED);
-        }
-        else {
-            User newUser = userSingleton.addRegisteredUser(newUsername.getText(), newPassword.getText(), newEmail.getText(), newCreditCard.getText());
-            if (newUser == null) {
-                signUpSuccessfulLabel.setText("An error occurred! Please check your email and password");
-                signUpSuccessfulLabel.setTextFill(Color.RED);
-            }
-            else {
-                signUpSuccessfulLabel.setText("Username registered!");
-                signUpSuccessfulLabel.setTextFill(Color.GREEN);
-                newUsername.clear();
-                newPassword.clear();
-                newEmail.clear();
-                newCreditCard.clear();
-            }
-        }
     }
 
     @FXML
@@ -478,6 +381,7 @@ public class GUIController {
         seat = seats.get("a1");
         seatNo.setText("a1");
     }
+    
     @FXML
     void changeSeatA2(ActionEvent event) {
         seat = seats.get("a2");
@@ -532,7 +436,6 @@ public class GUIController {
         seatNo.setText("b5");
     }
 
-
     @FXML
     void returnFromPayment(ActionEvent event) {
         seatSelectPane.toFront();
@@ -543,7 +446,6 @@ public class GUIController {
         showtimePaneRegistered.toFront();
         seat = null;
     }
-
     
     @FXML
     void continueToPayment(ActionEvent event) {
@@ -564,6 +466,7 @@ public class GUIController {
        
 
     }
+    
     @FXML
     void ticketPurchase(ActionEvent event) {
         
