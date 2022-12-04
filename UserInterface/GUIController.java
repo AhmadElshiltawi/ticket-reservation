@@ -59,6 +59,18 @@ public class GUIController {
     @FXML
     private TextField ticketemail;
     @FXML
+    private Text wasPurchaseSuccessful;
+    @FXML
+    private Button purchaseTicketBtn;
+    @FXML
+    private Pane ticketPopupPane;
+    @FXML
+    private Text ticketOutput;
+    @FXML
+    private Text emailOutput;
+    @FXML
+    private TextField EmailFieldPayment;
+    @FXML
     private Button retrieveTicketBtn;
     @FXML
     private Text tickettheatre;
@@ -103,7 +115,7 @@ public class GUIController {
     @FXML
     private Button seatB5;
     @FXML
-    private Pane showtimePaneRegistered1;
+    private Pane paymentPane;
     @FXML
     private TextField creditCardField;
     @FXML
@@ -514,17 +526,29 @@ public class GUIController {
 
     @FXML
     void returnFromPayment(ActionEvent event) {
-
+        seatSelectPane.toFront();
     }
 
     @FXML
     void returnToMovieSearch(ActionEvent event) {
         showtimePaneRegistered.toFront();
+        seat = null;
     }
 
     
     @FXML
     void continueToPayment(ActionEvent event) {
+        if (seat != null){
+            paymentPane.toFront();
+        }
+        else{
+            System.out.println("meow");
+        }
+       
+
+    }
+    @FXML
+    void ticketPurchase(ActionEvent event) {
 
     }
 
