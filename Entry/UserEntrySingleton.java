@@ -32,7 +32,7 @@ public class UserEntrySingleton {
         return instance;
     }
 
-    public User addRegisteredUser(String username, String password, String email) throws SQLException {
+    public User addRegisteredUser(String username, String password, String email, String credit) throws SQLException {
         if (db.checkIfEmailExists(email) == false && db.checkIfUsernameExists(username) == false) {
             if (!validateEmail(email)) {
                 System.out.println("Email " + email + " is not valid!");
@@ -55,9 +55,9 @@ public class UserEntrySingleton {
                 return null;
             }
 
-            User newUser = new RegisteredUser(username, password, email);
+            User newUser = new RegisteredUser(username, password, email, credit);
             users.add(newUser);
-            db.addUserToDatabase(username, password, email, true);
+            db.addUserToDatabase(username, password, email, true, credit);
             return newUser;
         }
         return null;
@@ -80,7 +80,8 @@ public class UserEntrySingleton {
             if (!validateEmail(email)) {
                 return;
             }
-            db.addUserToDatabase("", "", email, false);
+            // TODO: Not add stuff to database tbh
+            //db.addUserToDatabase("", "", email, false);
             users.add(new User(email));
         }
     }
@@ -111,9 +112,9 @@ public class UserEntrySingleton {
         }
     }
 
-    public void RegisterOrdinaryUser(String username, String password, String email) throws SQLException {
+    public void RegisterOrdinaryUser(String username, String password, String email, String credit) throws SQLException {
         deleteUser(email);
-        addRegisteredUser(username, password, email);
+        addRegisteredUser(username, password, email, credit);
     }
 
     public int getUserCount() {
