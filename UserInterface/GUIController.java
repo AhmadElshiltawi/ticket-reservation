@@ -13,6 +13,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.chart.PieChart.Data;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -157,7 +158,7 @@ public class GUIController {
     private ChoiceBox<String> movieChoiceBoxRegistered;
 
     @FXML
-    private ChoiceBox<?> showtimeChoiceBoxRegistered;
+    private ChoiceBox<Showtime> showtimeChoiceBoxRegistered;
 
     @FXML
     private Button currentlyShowingNextBtn;
@@ -231,6 +232,14 @@ public class GUIController {
         }
         movieChoiceBoxRegistered.setItems(list);
         
+    }
+
+    void populateDropdownShowtimes(ActionEvent event) {
+        Database db = Database.getInstance();
+        Theater theater = db.getTheater();
+        Movie movie = theater.getMovie(movieChoiceBoxRegistered.getValue());
+        ObservableList<Showtime> list2 = FXCollections.observableArrayList(movie.getShowtimes());
+        showtimeChoiceBoxRegistered.setItems(list2);
     }
 
             //Theater t = db.getTheater();
