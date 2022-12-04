@@ -187,11 +187,11 @@ public class GUIController {
         Movie mov = getMovie();
         Showtime showtime = getShowtime();
         seats = showtime.getSeats();
-        if(loggedInUser == null){
-            seatB5.setDisable(true);
-        }
         
         for( Map.Entry<String, Seat> seat : seats.entrySet()){
+            if (loggedInUser == null){
+                seatB5.setDisable(true);
+            }
             seatAssignmentHelper(seat.getKey(), seat.getValue().getIsBooked());
         }
         showtime.getRoomNumber();
@@ -392,10 +392,12 @@ public class GUIController {
             loginHome.setDisable(true);
             registeredUserHome.setDisable(false);
             registeredUserHome.setVisible(true);
+            homePaneRegistered.toFront();
             userLoggedInShowField.setText(username.getText());
             AnnouncementsTitle.setVisible(true);
             announcementNotificationImg.setVisible(true);
             scrollerNews.setVisible(true);
+            
         }
     }
     @FXML
@@ -409,6 +411,7 @@ public class GUIController {
             AnnouncementsTitle.setVisible(false);
             announcementNotificationImg.setVisible(false);
             scrollerNews.setVisible(false);
+            homePaneRegistered.toFront();
         }
         
         
