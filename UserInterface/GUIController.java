@@ -3,6 +3,7 @@ package UserInterface;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
+import java.util.Map;
 
 import Entry.*;
 import Theatre.*;
@@ -151,7 +152,7 @@ public class GUIController {
     private Pane showtimePaneRegistered;
 
     @FXML
-    private ChoiceBox<?> movieChoiceBoxRegistered;
+    private ChoiceBox<String> movieChoiceBoxRegistered;
 
     @FXML
     private ChoiceBox<?> showtimeChoiceBoxRegistered;
@@ -216,7 +217,28 @@ public class GUIController {
     @FXML
     void changePanelSearchMovies(ActionEvent event) {
         showtimePaneRegistered.toFront();
+        populateDropdownMovies();
     }
+
+    void populateDropdownMovies(){
+        Database db = Database.getInstance();
+        Theater t = db.getTheater();
+        for( Map.Entry<String, Movie> m : t.getMovies().entrySet() ){
+            movieChoiceBoxRegistered.setItems(m.getKey());
+        }
+        
+    }
+
+            //Theater t = db.getTheater();
+        // for( Map.Entry<String, Movie> m : t.getMovies().entrySet() ){
+        //     for(Showtime s : m.getValue().getShowtimes() ) {
+        //         for(Map.Entry<String, Seat> x : s.getSeats().entrySet()) {
+        //             x.getValue().setBooked(true);
+        //             if(x.getValue().getIsMemberOnly())
+        //                 db.updateSeatAvailability(t.getName(), m.getValue().getTitle(), s, x.getValue());
+        //         }
+        //     }
+        // }
 
     @FXML
     void changePanelTickets(ActionEvent event) {
@@ -341,12 +363,10 @@ public class GUIController {
         userSingleton = UserEntrySingleton.getInstance();
         GUI m = new GUI();
         
-        if (newEmail.getText().isEmpty() && newPassword.getText().isEmpty()) {
-            signUpSuccessfulLabel.setText("Please enter your email and password");
+        if (newEmail.getText().isEmpty() || newPassword.getText().isEmpty() || newCreditCard.getText().isEmpty() || 
+        !Payment.validateCard(newCreditCard.getText())) {
+            signUpSuccessfulLabel.setText("Please enter your details correctly.");
             signUpSuccessfulLabel.setTextFill(Color.RED);
-            if (newCreditCard.getText().isEmpty()){
-                signUpSuccessfulLabel.setText("Please enter your credit card");
-            }
         }
         else {
             User newUser = userSingleton.addRegisteredUser(newUsername.getText(), newPassword.getText(), newEmail.getText(), newCreditCard.getText());
@@ -360,6 +380,7 @@ public class GUIController {
                 newUsername.clear();
                 newPassword.clear();
                 newEmail.clear();
+                newCreditCard.clear();
             }
         }
     }

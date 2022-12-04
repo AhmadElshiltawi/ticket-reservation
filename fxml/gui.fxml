@@ -469,7 +469,7 @@
                         <Image url="@../UserInterface/img/key-3-256.png" />
                      </image>
                   </ImageView>
-                  <Label fx:id="signUpSuccessfulLabel" layoutX="6.0" layoutY="606.0" prefHeight="19.0" prefWidth="307.0" textFill="RED">
+                  <Label fx:id="signUpSuccessfulLabel" layoutX="7.0" layoutY="665.0" prefHeight="19.0" prefWidth="307.0" textFill="RED">
                      <font>
                         <Font name="System Italic" size="12.0" />
                      </font>
