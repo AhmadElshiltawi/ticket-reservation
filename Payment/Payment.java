@@ -17,9 +17,16 @@ public class Payment {
         Database db = Database.getInstance();
         String id = ticket.getId();
         String email = ticket.getEmail();
-        if( db.findTicket(id,email) != null )
-            if(db.removeTicket(id, email))
-                return strategy.refund();            
+        if( db.findTicket(id,email) != null && ticket.isRefundable())
+            if(db.updateSeatAvailability(
+                ticket.getTheater(),
+                ticket.getMovie(),
+                ticket.getRoom(),
+                ticket.getTime(),
+                ticket.getSeat(), false) 
+                > 0)
+                if(db.removeTicket(id, email))
+                    return strategy.refund();            
         return 0;
     }
 
@@ -27,9 +34,20 @@ public class Payment {
         Database db = Database.getInstance();
         String id = ticket.getId();
         String email = ticket.getEmail();
-        if( db.findTicket(id,email) == null && validateCard(credit))
-            if(db.addTicket(ticket))
-                return strategy.cost();  
+
+        boolean available = !db.getSeatAvailability(ticket.getTheater(),ticket.getMovie(),ticket.getRoom(),ticket.getTime(),ticket.getSeat());
+        if( db.findTicket(id,email) == null && available)
+        {
+            System.out.println("ticket not found");
+            if(db.updateSeatAvailability(ticket.getTheater(),ticket.getMovie(),ticket.getRoom(),ticket.getTime(),ticket.getSeat(),true) > 0) {
+                System.out.println("Seat updated");
+                if(db.addTicket(ticket))
+                {
+                    System.out.println("ticket added");
+                    return strategy.cost(); 
+                }
+            }
+        }       
         return 0;
     }
 

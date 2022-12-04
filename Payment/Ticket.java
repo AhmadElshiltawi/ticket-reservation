@@ -1,7 +1,6 @@
 package Payment;
 import java.time.LocalDateTime;
 import java.util.UUID;
-import Project.*;
 
 public class Ticket {
     // Field

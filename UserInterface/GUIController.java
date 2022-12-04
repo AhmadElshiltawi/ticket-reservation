@@ -4,10 +4,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.*;
 
 import Entry.*;
 import Theatre.*;
@@ -18,22 +15,13 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.chart.PieChart.Data;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import java.util.regex.*;
 
 public class GUIController {
     @FXML
@@ -350,24 +338,48 @@ public class GUIController {
             }
         }
     }
+    // TODO delete ticket
     @FXML
     void deleteTicket(ActionEvent event) {
-        Alert alert = new Alert(AlertType.INFORMATION, "Ticket Deleted.", ButtonType.CLOSE);
-            alert.showAndWait();
-            if (alert.getResult() == ButtonType.CLOSE){
-                alert.close();
+        Database db = Database.getInstance();
+        Ticket ticket = db.findTicket(ticketid.getText(), ticketemail.getText());
+        double refund = 0;
+        if (  ticket != null)
+        {
+            if( loggedInUser == null)
+            {
+                refund = Payment.processReturn(ticket, new RegularCost());
             }
-        Database ticketfinder = Database.getInstance();
-        ticketfinder.removeTicket(ticketid.getText(), ticketemail.getText());
-        tickettheatre.setText(""); 
-        ticketmovie.setText("");
-        ticketid.setText("");
-        ticketroom.setText("");
-        ticketseat.setText("");
-        tickettime.setText("");
-        ticketDeleteBtn.setDisable(true);
-        
+            else {
+                refund = Payment.processReturn(ticket, new RegisteredCost());
+            }
+
+            if( refund != 0)
+            {
+                seat.setBooked(false);
+                Alert alert = new Alert(AlertType.INFORMATION, "Ticket Deleted.\nRefund: "+String.format(".2%d",refund)+"\nEmail reciept sent", ButtonType.CLOSE);
+                alert.showAndWait();
+                if (alert.getResult() == ButtonType.CLOSE){
+                    alert.close();
+                }
+                tickettheatre.setText(""); 
+                ticketmovie.setText("");
+                ticketid.setText("");
+                ticketroom.setText("");
+                ticketseat.setText("");
+                tickettime.setText("");
+                ticketDeleteBtn.setDisable(true);
+                return;
+            }
+        }
+
+        Alert alert = new Alert(AlertType.INFORMATION, "Ticket NOT refunded!", ButtonType.CLOSE);
+        alert.showAndWait();
+        if (alert.getResult() == ButtonType.CLOSE){
+            alert.close();
+        }
     }
+    
     @FXML
     void changePanelUserInfo(ActionEvent event) {
         userInfoPaneRegistered.toFront();
@@ -536,6 +548,9 @@ public class GUIController {
     void continueToPayment(ActionEvent event) {
         if (seat != null){
             paymentPane.toFront();
+            ticketPopupPane.setVisible(false);
+            creditCardField.clear();
+            EmailFieldPayment.clear();
         }
         else{
             System.out.println("meow");
@@ -567,16 +582,39 @@ public class GUIController {
             wasPurchaseSuccessful.setText("Please enter your email... CORRECTLY >:(");
             return;
         }
-        else{
+
+        // Purchase ticket
+        Database db = Database.getInstance();
+        Ticket ticket = new Ticket( db.getTheater().getName(), 
+                                    getMovie().getTitle(), 
+                                    EmailFieldPayment.getText(), 
+                                    getShowtime().getRoomNumber(), 
+                                    seat.getId(),
+                                    getShowtime().getTime()
+                                    );
+        Double price = 0.0;
+        if(loggedInUser == null)
+            price = Payment.processSale(ticket, creditCardField.getText(), new RegularCost());
+        else
+            price = Payment.processSale(ticket, creditCardField.getText(), new RegisteredCost());
+        
+        if(price > 0) {
+            seat.setBooked(true);
             wasPurchaseSuccessful.setFill(Color.GREEN);
             wasPurchaseSuccessful.setText("Thank you for your purchase!");
+            ticketPrice.setText("$ " + String.format("%.2f", price));
             ticketPopupPane.setVisible(true);
             emailOutput.setText(EmailFieldPayment.getText());
-            ticketOutput.setText("Placeholder ID");
+            ticketOutput.setText(ticket.getId());
+            creditCardField.clear();
+            EmailFieldPayment.clear();
         }
-        
-         
+        else {
+            ticketPrice.setText(null);
+            ticketPopupPane.setVisible(false);
+            wasPurchaseSuccessful.setFill(Color.RED);
+            wasPurchaseSuccessful.setText("Purchase Unsuccessfull");
+        }         
     }
-
 
 }

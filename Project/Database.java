@@ -3,6 +3,7 @@ import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import Entry.*;
 import Payment.Ticket;
@@ -42,31 +43,63 @@ public class Database {
     }
     
     // Seats and Theater object from database
-    public void updateSeatAvailability(String theater, String movie, Showtime showtime, Seat seat){
+    public int updateSeatAvailability(String theater, String movie, int room, LocalDateTime time, String seat, boolean isBooked){
+        int update = -1;
         try {
             String sql =
                 "UPDATE time_seat " +
                 "SET booked= ? " +
                 "WHERE theater=? AND room_number=? AND movie_name=? AND year=? AND month=? AND day=? AND hour=? AND minute=? AND seat=?";
             PreparedStatement query = connection.prepareStatement(sql);
-            query.setBoolean(1, seat.getIsBooked());
+            query.setBoolean(1, isBooked);
             query.setString(2, theater);
-            query.setInt(3,showtime.getRoomNumber());
+            query.setInt(3, room);
             query.setString(4, movie);
-            query.setInt(5, showtime.getTime().getYear());
-            query.setInt(6, showtime.getTime().getMonthValue());
-            query.setInt(7, showtime.getTime().getDayOfMonth());
-            query.setInt(8, showtime.getTime().getHour());
-            query.setInt(9, showtime.getTime().getMinute());
-            query.setString(10, seat.getId());
-            System.out.println(query.executeUpdate());
+            query.setInt(5, time.getYear());
+            query.setInt(6, time.getMonthValue());
+            query.setInt(7, time.getDayOfMonth());
+            query.setInt(8, time.getHour());
+            query.setInt(9, time.getMinute());
+            query.setString(10, seat);
+            update = query.executeUpdate();
             query.close();
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return update;
+    }
+
+    public boolean getSeatAvailability(String theater, String movie, int room, LocalDateTime time, String seat){
+        boolean booked = true;
+        try {
+            String sql =
+                "SELECT booked " +
+                "From time_seat " +
+                "WHERE theater=? AND room_number=? AND movie_name=? AND year=? AND month=? AND day=? AND hour=? AND minute=? AND seat=?";
+            PreparedStatement query = connection.prepareStatement(sql);
+            query.setString(1, theater);
+            query.setInt(2, room);
+            query.setString(3, movie);
+            query.setInt(4, time.getYear());
+            query.setInt(5, time.getMonthValue());
+            query.setInt(6, time.getDayOfMonth());
+            query.setInt(7, time.getHour());
+            query.setInt(8, time.getMinute());
+            query.setString(9, seat);
+            ResultSet resultSet = query.executeQuery();
+            while(resultSet.next()){
+                booked = resultSet.getBoolean("booked");
+            }
+            query.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return booked;
     }
     
+
     public Theater getTheater(){
         HashMap<String, Theater> theaters = new HashMap<>();
         try {
@@ -269,25 +302,30 @@ public class Database {
     public static void main(String[] args) {
         Database db = getInstance();
         //Ticket tick = new Ticket("Theater480", "Avatar","person1@email.com", 1, "a2", LocalDateTime.now());
-        Ticket tick = db.findTicket("21", "person1@email.com");
-        System.out.println(tick.getMovie());
-        System.out.println(db.removeTicket("12", "person1@email.com"));
+        // Ticket tick = db.findTicket("21", "person1@email.com");
+        // System.out.println(tick.getMovie());
+        // System.out.println(db.removeTicket("12", "person1@email.com"));
         //System.out.println(db.addTicket(tick));
 
         // Testing the add remove functionality of the ticket
         //System.out.println(db.findTicket("CA13", "ahmad@email.com"));
         //System.out.println(db.removeTicket("CA13", "ahmad@email.com"));
         // Testing seat capability
-        //Theater t = db.getTheater();
-        // for( Map.Entry<String, Movie> m : t.getMovies().entrySet() ){
-        //     for(Showtime s : m.getValue().getShowtimes() ) {
-        //         for(Map.Entry<String, Seat> x : s.getSeats().entrySet()) {
-        //             x.getValue().setBooked(true);
-        //             if(x.getValue().getIsMemberOnly())
-        //                 db.updateSeatAvailability(t.getName(), m.getValue().getTitle(), s, x.getValue());
-        //         }
-        //     }
-        // }
+        Theater t = db.getTheater();
+        for( Map.Entry<String, Movie> m : t.getMovies().entrySet() ){
+            for(Showtime s : m.getValue().getShowtimes() ) {
+                for(Map.Entry<String, Seat> x : s.getSeats().entrySet()) {
+                    x.getValue().setBooked(true);
+                    if(x.getValue().getIsMemberOnly())
+                    {
+                        Ticket ticket = new Ticket( db.getTheater().getName(), m.getValue().getTitle(), "ahmad@email.com", s.getRoomNumber(), x.getValue().getId(),s.getTime() );
+                        System.out.println(db.getSeatAvailability(ticket.getTheater(), ticket.getMovie(), ticket.getRoom(), ticket.getTime(), ticket.getSeat()));
+                        //db.updateSeatAvailability(t.getName(), m.getValue().getTitle(), s.getRoomNumber(), s.getTime(), x.getValue().getId(), true);
+                    }
+                    
+                }
+            }
+        }
 
         Database.closeALLConnections();
     }
