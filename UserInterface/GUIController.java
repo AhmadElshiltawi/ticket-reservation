@@ -2,8 +2,11 @@ package UserInterface;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import Entry.*;
 import Theatre.*;
@@ -32,185 +35,143 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 public class GUIController {
-
-    
-    private UserEntrySingleton userSingleton;
-
-    private User loggedInUser = null;
     @FXML
     private AnchorPane registeredUserHome;
-
     @FXML
     private PasswordField newCreditCard;
-
     @FXML
     private Label userLoggedInShowField;
-
     @FXML
     private Button homeBtn;
-
     @FXML
     private Button ticketBtn;
-
     @FXML
     private Button showtimeBtn;
-
     @FXML
     private Button userInfoBtnRegistered;
-
     @FXML
     private Button signoutBtn;
-
     @FXML
     private Pane ticketPaneRegistered;
-
     @FXML
     private TextField ticketid;
-
     @FXML
     private TextField ticketemail;
-
     @FXML
     private Button retrieveTicketBtn;
-
     @FXML
     private Text tickettheatre;
-
     @FXML
     private Text ticketmovie;
-
     @FXML
     private Text ticketroom;
-
     @FXML
     private Text ticketseat;
-
     @FXML
     private Text tickettime;
-
     @FXML
     private Button ticketDeleteBtn;
-
     @FXML
     private Text successfulTicketDlt;
-
     @FXML
     private Pane userInfoPaneRegistered;
-
     @FXML
     private Pane showtimePaneRegistered2;
-
     @FXML
     private Button returnToMovieSearchBtn;
-
     @FXML
     private Text movieSeatselectlable;
-
     @FXML
     private Button seatA1;
-
     @FXML
     private Button seatA2;
-
     @FXML
     private Button seatA3;
-
     @FXML
     private Button seatA4;
-
     @FXML
     private Button seatA5;
-
     @FXML
     private Button seatB1;
-
     @FXML
     private Button seatB2;
-
     @FXML
     private Button seatB3;
-
     @FXML
     private Button seatB4;
-
     @FXML
     private Button seatB5;
-
     @FXML
     private Pane showtimePaneRegistered1;
-
     @FXML
     private TextField creditCardField;
-
     @FXML
     private Text ticketPrice;
-
     @FXML
     private Button ticketPurchaseButtonRegistered1;
-
     @FXML
     private Button backButtonPaymentPage;
-
     @FXML
     private Pane showtimePaneRegistered;
-
     @FXML
     private ChoiceBox<String> movieChoiceBoxRegistered;
-
     @FXML
-    private ChoiceBox<Showtime> showtimeChoiceBoxRegistered;
-
+    private ChoiceBox<String> showtimeChoiceBoxRegistered;
     @FXML
     private Button currentlyShowingNextBtn;
-
     @FXML
     private Pane homePaneRegistered;
-
     @FXML
     private VBox pnItems;
-
     @FXML
     private ScrollPane scrollerNews;
-
     @FXML
     private VBox pnItems1;
-
     @FXML
     private ImageView announcementNotificationImg;
-
     @FXML
     private Label AnnouncementsTitle;
-
     @FXML
     private BorderPane loginHome;
-
     @FXML
     private TextField username;
-
     @FXML
     private PasswordField password;
-
     @FXML
     private Button loginbutton;
-
     @FXML
     private Button signUpButton;
-
     @FXML
     private Button skipButton;
-
     @FXML
     private PasswordField newPassword;
-
     @FXML
     private TextField newEmail;
-
     @FXML
     private Label signUpSuccessfulLabel;
-
     @FXML
     private TextField newUsername;
 
+    // Local Variables
+    private UserEntrySingleton userSingleton;
+    private User loggedInUser = null;
+
+    
+    private Movie getMovie(){
+        return Database.getInstance().getTheater().getMovie(movieChoiceBoxRegistered.getValue());
+    }
+    
+    private Showtime getShowtime() {
+        Pattern pattern = Pattern.compile("room (\\d) : time (.+)$");
+        Matcher matcher = pattern.matcher(showtimeChoiceBoxRegistered.getValue());
+        if (matcher.find())
+        {
+            int room = Integer.parseInt(matcher.group(1));
+            LocalDateTime time = LocalDateTime.parse(matcher.group(2));
+            return getMovie().getShowtime(room, time);
+        }
+        return null;
+    }
 
     @FXML
     void changePanelHome(ActionEvent event) {
@@ -235,10 +196,12 @@ public class GUIController {
     }
 
     void populateDropdownShowtimes(ActionEvent event) {
+        ObservableList<String> list2 = FXCollections.observableArrayList();
         Database db = Database.getInstance();
         Theater theater = db.getTheater();
         Movie movie = theater.getMovie(movieChoiceBoxRegistered.getValue());
-        ObservableList<Showtime> list2 = FXCollections.observableArrayList(movie.getShowtimes());
+        for(Showtime s : movie.getShowtimes() )
+            list2.add("room " + s.getRoomNumber() + " : time " + s.getTime().toString());
         showtimeChoiceBoxRegistered.setItems(list2);
     }
 

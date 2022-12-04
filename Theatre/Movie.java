@@ -1,5 +1,6 @@
 package Theatre;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Movie {
@@ -24,6 +25,15 @@ public class Movie {
         }
         System.out.println("Error showtime not found!");
         return showtime;
+    }
+    
+    public Showtime getShowtime(int num, LocalDateTime time) {
+        for(Showtime s : showtimes){
+            if(s.getRoomNumber() == num && s.getTime().isEqual(time))
+                return s;
+        }
+        System.out.println("Error showtime not found!");
+        return null;
     }
 
     // Getters and Setters
