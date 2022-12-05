@@ -121,5 +121,16 @@ public class UserEntrySingleton {
     public int getUserCount() {
         return users.size();
     }
-    
+
+    public boolean isUserRegistered(String email) {
+        for (int i = 0; i < users.size(); i++) {
+            if (users.get(i) instanceof RegisteredUser) {
+                RegisteredUser currentUser = (RegisteredUser) users.get(i);
+                if (email.equals(currentUser.getEmail())) {
+                     return true;
+                }
+            }
+        }
+        return false;
+    }
 }
