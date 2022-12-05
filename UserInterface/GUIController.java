@@ -5,8 +5,9 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import Entry.*;
+
 import Theatre.*;
+import Users.*;
 import Payment.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

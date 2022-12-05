@@ -1,4 +1,4 @@
-package Entry;
+package Users;
 
 public class RegisteredUser extends User {
     private String username;
