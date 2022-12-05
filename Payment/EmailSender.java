@@ -37,10 +37,4 @@ public class EmailSender {
             return false;
         }
     }
-
-    public static void main(String[] args) {
-        EmailSender sender = new EmailSender();
-        sender.sendEmail("akshiltawi@gmail.com", "Hi there :)");
-    }
-
 }
