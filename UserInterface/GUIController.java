@@ -215,6 +215,11 @@ public class GUIController {
             else {
                 signUpSuccessfulLabel.setText("Username registered!\nRecurring payment setup! Next charge:" + LocalDateTime.now().plusYears(1));
                 signUpSuccessfulLabel.setTextFill(Color.GREEN);
+                Alert alert = new Alert(AlertType.INFORMATION, "Recurring payment setup! Next charge:" + LocalDateTime.now().plusYears(1), ButtonType.CLOSE);
+                alert.showAndWait();
+                if (alert.getResult() == ButtonType.CLOSE){
+                    alert.close();
+                }
                 newUsername.clear();
                 newPassword.clear();
                 newEmail.clear();
