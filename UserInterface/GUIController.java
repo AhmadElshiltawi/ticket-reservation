@@ -213,7 +213,7 @@ public class GUIController {
                 signUpSuccessfulLabel.setTextFill(Color.RED);
             }
             else {
-                signUpSuccessfulLabel.setText("Username registered!");
+                signUpSuccessfulLabel.setText("Username registered!\nRecurring payment setup! Next charge:" + LocalDateTime.now().plusYears(1));
                 signUpSuccessfulLabel.setTextFill(Color.GREEN);
                 newUsername.clear();
                 newPassword.clear();
@@ -259,6 +259,8 @@ public class GUIController {
 
     @FXML
     void changePanelTickets(ActionEvent event) {
+        ticketemail.setText(null);
+        ticketid.setText(null);
         ticketPaneRegistered.toFront();
         
     }
@@ -295,31 +297,30 @@ public class GUIController {
             }
         }
     }
-    
-    // TODO delete ticket
+
     @FXML
     void deleteTicket(ActionEvent event) {
         Database db = Database.getInstance();
         Ticket ticket = db.findTicket(ticketid.getText(), ticketemail.getText());
         double refund = 0;
-        if (  ticket != null)
+        if ( ticket != null)
         {
-            if( loggedInUser == null)
+            boolean isRegistered= false;
+            try {
+                UserEntrySingleton singleton = UserEntrySingleton.getInstance();
+                isRegistered = singleton.isUserRegistered(ticketemail.getText());
+            } catch (Exception e) {}
+            if( !isRegistered)
             {
                 refund = Payment.processReturn(ticket, new RegularCost());
             }
             else {
                 refund = Payment.processReturn(ticket, new RegisteredCost());
             }
-
+            System.out.println(refund);
+            
             if( refund != 0)
             {
-                seat.setBooked(false);
-                Alert alert = new Alert(AlertType.INFORMATION, "Ticket Deleted.\nRefund: "+String.format(".2%d",refund)+"\nEmail reciept sent", ButtonType.CLOSE);
-                alert.showAndWait();
-                if (alert.getResult() == ButtonType.CLOSE){
-                    alert.close();
-                }
                 tickettheatre.setText(""); 
                 ticketmovie.setText("");
                 ticketid.setText("");
@@ -327,15 +328,27 @@ public class GUIController {
                 ticketseat.setText("");
                 tickettime.setText("");
                 ticketDeleteBtn.setDisable(true);
-                return;
+                Alert alert = new Alert(AlertType.INFORMATION, "Ticket Deleted.\nRefund: "+ String.format("%.2f", refund)+"\nEmail reciept sent", ButtonType.CLOSE);
+                alert.showAndWait();
+                if (alert.getResult() == ButtonType.CLOSE){
+                    alert.close();
+                }
+            }
+            else {
+                Alert alert = new Alert(AlertType.INFORMATION, "Ticket NOT refunded!", ButtonType.CLOSE);
+                alert.showAndWait();
+                if (alert.getResult() == ButtonType.CLOSE){
+                    alert.close();
+                }
+            }
+        } else {
+            Alert alert = new Alert(AlertType.INFORMATION, "Ticket NOT found!", ButtonType.CLOSE);
+            alert.showAndWait();
+            if (alert.getResult() == ButtonType.CLOSE){
+                alert.close();
             }
         }
 
-        Alert alert = new Alert(AlertType.INFORMATION, "Ticket NOT refunded!", ButtonType.CLOSE);
-        alert.showAndWait();
-        if (alert.getResult() == ButtonType.CLOSE){
-            alert.close();
-        }
     }
     
     @FXML
@@ -438,7 +451,7 @@ public class GUIController {
 
     @FXML
     void returnFromPayment(ActionEvent event) {
-        seatSelectPane.toFront();
+        showtimePaneRegistered.toFront();
     }
 
     @FXML
@@ -452,6 +465,8 @@ public class GUIController {
         if (seat != null){
             paymentPane.toFront();
             ticketPopupPane.setVisible(false);
+            wasPurchaseSuccessful.setText(null);
+            ticketPrice.setText(null);
             creditCardField.clear();
             EmailFieldPayment.clear();
         }
@@ -497,7 +512,12 @@ public class GUIController {
                                     getShowtime().getTime()
                                     );
         Double price = 0.0;
-        if(loggedInUser == null)
+        boolean isRegistered= false;
+        try {
+            UserEntrySingleton singleton = UserEntrySingleton.getInstance();
+            isRegistered = singleton.isUserRegistered(EmailFieldPayment.getText());
+        } catch (Exception e) {}
+        if(!isRegistered)
             price = Payment.processSale(ticket, creditCardField.getText(), new RegularCost());
         else
             price = Payment.processSale(ticket, creditCardField.getText(), new RegisteredCost());

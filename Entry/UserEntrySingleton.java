@@ -133,4 +133,10 @@ public class UserEntrySingleton {
         }
         return false;
     }
+    public static void main(String[] args) throws Exception{
+        UserEntrySingleton singleton = UserEntrySingleton.getInstance();
+        boolean  t = singleton.isUserRegistered("ahmad@email.com");
+        System.out.println(t);
+        
+    }
 }
