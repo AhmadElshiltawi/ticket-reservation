@@ -62,14 +62,15 @@ public class GUIController {
     // Local Variables
     private UserEntrySingleton userSingleton;
     private User loggedInUser = null;
-    Seat seat;
-    HashMap<String, Seat> seats;
+    private Seat seat;
+    private HashMap<String, Seat> seats;
     
-    // Helper Methods     
+    // Helper Methods   
+    // Get movie that is selected  
     private Movie getMovie(){
         return Database.getInstance().getTheater().getMovie(movieChoiceBoxRegistered.getValue());
     }
-    
+    // Get showtime that is selected
     private Showtime getShowtime() {
         Pattern pattern = Pattern.compile("room (\\d) : time (.+)$");
         Matcher matcher = pattern.matcher(showtimeChoiceBoxRegistered.getValue());
@@ -81,7 +82,7 @@ public class GUIController {
         }
         return null;
     }
-
+    // Set the availability of seats in the GUI
     private void seatAssignmentHelper(String s, boolean tf){
         switch (s) {
             case "a1":
@@ -123,7 +124,7 @@ public class GUIController {
                 break;
         }
     }
-    
+    // Populate movie list
     private void populateDropdownMovies(){
         seatSelectNextBtn.setDisable(true);
         ObservableList<String> list = FXCollections.observableArrayList();
@@ -136,7 +137,7 @@ public class GUIController {
         movieChoiceBoxRegistered.setOnAction(this::populateDropdownShowtimes);
         
     }
-    
+    // Lets you proceed to seat selection (Enable, disable go to seat select button)
     private void activateSeatSelection(ActionEvent event){
         
         if(showtimeChoiceBoxRegistered.getValue() ==  null){
@@ -147,7 +148,7 @@ public class GUIController {
         }
         
     }
-
+    // Fill list of showtimes
     private void populateDropdownShowtimes(ActionEvent event) {
         try {
         seatSelectNextBtn.setDisable(true);
@@ -166,7 +167,7 @@ public class GUIController {
         }
         
     }
-
+    // Check the login credentials
     private void checkLogin() throws IOException, SQLException {
         userSingleton = UserEntrySingleton.getInstance();
         User user = userSingleton.validateAccount(username.getText().toString(), password.getText().toString());
@@ -197,7 +198,7 @@ public class GUIController {
             
         }
     }
-
+    // Check if the sign up  was valid
     private void checkSignUpValidity() throws SQLException {
         userSingleton = UserEntrySingleton.getInstance();
         GUI m = new GUI();
@@ -229,40 +230,48 @@ public class GUIController {
         }
     }
 
-
     // Component press action events
-    @FXML
-    void seatSelect(ActionEvent event) {
-        Movie mov = getMovie();
-        Showtime showtime = getShowtime();
-        seats = showtime.getSeats();
-        
-        for( Map.Entry<String, Seat> seat : seats.entrySet()){
-            if (loggedInUser == null){
-                seatB5.setDisable(true);
-            }
-            seatAssignmentHelper(seat.getKey(), seat.getValue().getIsBooked());
-        }
-        showtime.getRoomNumber();
-        seatSelectPane.toFront();
-        movieSeatselectlable.setText(mov.getTitle());
 
+    // Initial customer page
+    // -- Login
+    @FXML
+    void userLogin(ActionEvent event) throws IOException, SQLException {
+        checkLogin();
     }
 
+    // -- Sign up new user
+    @FXML
+    void signUp(ActionEvent event) throws SQLException {
+        checkSignUpValidity();
+    }
+
+    // -- Continue without registering
+    @FXML
+    void continueUnregistered(ActionEvent event) throws IOException {
+        loginHome.setVisible(false);
+        registeredUserHome.setDisable(false);
+        registeredUserHome.setVisible(true);
+        loggedInUser = null;
+        if (loggedInUser == null){
+            userLoggedInShowField.setText("Guest");
+            AnnouncementsTitle.setVisible(false);
+            announcementNotificationImg.setVisible(false);
+            scrollerNews.setVisible(false);
+            homePaneRegistered.toFront();
+        }    
+    }
+    
+// Main Page Tabs (Left hand side)
+    //Home Tab
+    // --Select Home tab from the main page
     @FXML
     void changePanelHome(ActionEvent event) {
         homePaneRegistered.toFront();
         
     }
 
-    @FXML
-    void changePanelSearchMovies(ActionEvent event) {
-        showtimePaneRegistered.toFront();
-        seatB5.setStyle("-fx-background-color:#d4af37;");
-        seatB5.setStyle("-fx-border-color:#d4af37;");
-        populateDropdownMovies();
-    }
-
+    //View Ticket Tab
+    // -- Choose the search ticket tab
     @FXML
     void changePanelTickets(ActionEvent event) {
         ticketemail.setText(null);
@@ -270,7 +279,8 @@ public class GUIController {
         ticketPaneRegistered.toFront();
         
     }
-
+    
+    // -- Take in Ticket id and email and show ticket info
     @FXML
     void retrieveTicket(ActionEvent event) {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -303,7 +313,8 @@ public class GUIController {
             }
         }
     }
-
+    
+    // -- Check if ticket is refundable and refund the customer
     @FXML
     void deleteTicket(ActionEvent event) {
         Database db = Database.getInstance();
@@ -356,116 +367,44 @@ public class GUIController {
         }
 
     }
-    
+        
+    //Search Movie Tab
+    // -- Select movie search tab
     @FXML
-    void changePanelUserInfo(ActionEvent event) {
-        userInfoPaneRegistered.toFront();
-    }
-
-    @FXML
-    void userLogout(ActionEvent event) {
-            loginHome.setVisible(true);
-            loginHome.setDisable(false);
-            registeredUserHome.setDisable(true);
-            registeredUserHome.setVisible(false);
-    }
-
-    @FXML
-    void userLogin(ActionEvent event) throws IOException, SQLException {
-        checkLogin();
+    void changePanelSearchMovies(ActionEvent event) {
+        showtimePaneRegistered.toFront();
+        seatB5.setStyle("-fx-background-color:#d4af37;");
+        seatB5.setStyle("-fx-border-color:#d4af37;");
+        populateDropdownMovies();
     }
         
+    // --Proceeding to select seat after selecting a movie and showtime
     @FXML
-    void continueUnregistered(ActionEvent event) throws IOException {
-        loginHome.setVisible(false);
-        registeredUserHome.setDisable(false);
-        registeredUserHome.setVisible(true);
-        loggedInUser = null;
-        if (loggedInUser == null){
-            userLoggedInShowField.setText("Guest");
-            AnnouncementsTitle.setVisible(false);
-            announcementNotificationImg.setVisible(false);
-            scrollerNews.setVisible(false);
-            homePaneRegistered.toFront();
-        }    
-    }
-    
-    @FXML
-    void signUp(ActionEvent event) throws SQLException {
-        checkSignUpValidity();
+    void seatSelect(ActionEvent event) {
+        Movie mov = getMovie();
+        Showtime showtime = getShowtime();
+        seats = showtime.getSeats();
+        
+        for( Map.Entry<String, Seat> seat : seats.entrySet()){
+            if (loggedInUser == null){
+                seatB5.setDisable(true);
+            }
+            seatAssignmentHelper(seat.getKey(), seat.getValue().getIsBooked());
+        }
+        showtime.getRoomNumber();
+        seatSelectPane.toFront();
+        movieSeatselectlable.setText(mov.getTitle());
+
     }
 
-    @FXML
-    void changeSeatA1(ActionEvent event) {
-        seat = seats.get("a1");
-        seatNo.setText("a1");
-    }
-    
-    @FXML
-    void changeSeatA2(ActionEvent event) {
-        seat = seats.get("a2");
-        seatNo.setText("a2");
-    }
-
-    @FXML
-    void changeSeatA3(ActionEvent event) {
-        seat = seats.get("a3");
-        seatNo.setText("a3");
-    }
-
-    @FXML
-    void changeSeatA4(ActionEvent event) {
-        seat = seats.get("a4");
-        seatNo.setText("a4");
-    }
-
-    @FXML
-    void changeSeatA5(ActionEvent event) {
-        seat = seats.get("a5");
-        seatNo.setText("a5");
-    }
-
-    @FXML
-    void changeSeatB1(ActionEvent event) {
-        seat = seats.get("b1");
-        seatNo.setText("b1");
-    }
-
-    @FXML
-    void changeSeatB2(ActionEvent event) {
-        seat = seats.get("b2");
-        seatNo.setText("b2");
-    }
-
-    @FXML
-    void changeSeatB3(ActionEvent event) {
-        seat = seats.get("b3");
-        seatNo.setText("b3");
-    }
-
-    @FXML
-    void changeSeatB4(ActionEvent event) {
-        seat = seats.get("b4");
-        seatNo.setText("b4");
-    }
-
-    @FXML
-    void changeSeatB5VIP(ActionEvent event) {
-        seat = seats.get("b5");
-        seatNo.setText("b5");
-    }
-
-    @FXML
-    void returnFromPayment(ActionEvent event) {
-        showtimePaneRegistered.toFront();
-    }
-
+    // -- Back button from seat select
     @FXML
     void returnToMovieSearch(ActionEvent event) {
         showtimePaneRegistered.toFront();
         seat = null;
     }
     
+    // -- Select pay from seat select
     @FXML
     void continueToPayment(ActionEvent event) {
         if (seat != null){
@@ -479,15 +418,18 @@ public class GUIController {
         else{
             System.out.println("meow");
         }
-
         if(loggedInUser != null){
             EmailFieldPayment.setText(loggedInUser.getEmail());
-            // TODO PLEASE IMPLEMENT CREDIT CARD PASSED INTO THIS FUNCTION: MUST USE REGISTEREDUSER WE COULDNT FIGURE IT OUT w WHAT U HAD TY
         }
-       
-
     }
     
+    // -- Back button from payments screen
+    @FXML
+    void returnFromPayment(ActionEvent event) {
+        showtimePaneRegistered.toFront();
+    }
+
+    // -- Purchase ticket from payment screen
     @FXML
     void ticketPurchase(ActionEvent event) {
         
@@ -546,5 +488,71 @@ public class GUIController {
             wasPurchaseSuccessful.setText("Purchase Unsuccessfull");
         }         
     }
+    
+    // Sign out tab
+    @FXML
+    void userLogout(ActionEvent event) {
+            loginHome.setVisible(true);
+            loginHome.setDisable(false);
+            registeredUserHome.setDisable(true);
+            registeredUserHome.setVisible(false);
+    }
 
+    // User Select Tab
+    @FXML
+    void changePanelUserInfo(ActionEvent event) {
+        userInfoPaneRegistered.toFront();
+    }
+
+    // Seat press actions
+    @FXML
+    void changeSeatA1(ActionEvent event) {
+        seat = seats.get("a1");
+        seatNo.setText("a1");
+    } 
+    @FXML
+    void changeSeatA2(ActionEvent event) {
+        seat = seats.get("a2");
+        seatNo.setText("a2");
+    }
+    @FXML
+    void changeSeatA3(ActionEvent event) {
+        seat = seats.get("a3");
+        seatNo.setText("a3");
+    }
+    @FXML
+    void changeSeatA4(ActionEvent event) {
+        seat = seats.get("a4");
+        seatNo.setText("a4");
+    }
+    @FXML
+    void changeSeatA5(ActionEvent event) {
+        seat = seats.get("a5");
+        seatNo.setText("a5");
+    }
+    @FXML
+    void changeSeatB1(ActionEvent event) {
+        seat = seats.get("b1");
+        seatNo.setText("b1");
+    }
+    @FXML
+    void changeSeatB2(ActionEvent event) {
+        seat = seats.get("b2");
+        seatNo.setText("b2");
+    }
+    @FXML
+    void changeSeatB3(ActionEvent event) {
+        seat = seats.get("b3");
+        seatNo.setText("b3");
+    }
+    @FXML
+    void changeSeatB4(ActionEvent event) {
+        seat = seats.get("b4");
+        seatNo.setText("b4");
+    }
+    @FXML
+    void changeSeatB5VIP(ActionEvent event) {
+        seat = seats.get("b5");
+        seatNo.setText("b5");
+    }
 }
