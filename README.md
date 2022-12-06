@@ -22,3 +22,4 @@ To make a SQLite database open terminal in "../Database" and write:
 
 Also you need to add JavaFx lib to arg path:
 https://openjfx.io/
+
