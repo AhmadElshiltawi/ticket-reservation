@@ -1,7 +1,7 @@
 package Payment;
 
 import java.util.regex.*;
-
+import java.util.UUID;
 import Database.Database;
 
 public class Payment {
@@ -26,7 +26,19 @@ public class Payment {
                 ticket.getSeat(), false) 
                 > 0)
                 if(db.removeTicket(id, email))
-                    return strategy.refund();            
+                {
+                    double refund = strategy.refund();
+                    EmailSender emailSender = new EmailSender();
+                    String message = 
+                            "Ticket Return.\n" + 
+                            "Refund: " + String.format("%.2f", refund) +
+                            "\nCredit Code: " + UUID.randomUUID().toString() +
+                            "\nTicket ID: " + ticket.getId() + 
+                            "\nSorry to see you go.";
+                    emailSender.sendEmail(email, message);
+                    return refund;  
+                }
+                              
         return 0;
     }
     // Process Sale given a ticket, credit card and strategy. Cannot get seat thats already booked
@@ -38,13 +50,18 @@ public class Payment {
         boolean available = !db.getSeatAvailability(ticket.getTheater(),ticket.getMovie(),ticket.getRoom(),ticket.getTime(),ticket.getSeat());
         if( db.findTicket(id,email) == null && available)
         {
-            System.out.println("ticket not found");
             if(db.updateSeatAvailability(ticket.getTheater(),ticket.getMovie(),ticket.getRoom(),ticket.getTime(),ticket.getSeat(),true) > 0) {
-                System.out.println("Seat updated");
                 if(db.addTicket(ticket))
                 {
-                    System.out.println("ticket added");
-                    return strategy.cost(); 
+                    double cost = strategy.cost();
+                    EmailSender emailSender = new EmailSender();
+                    String message = 
+                            "Ticket Sale Processed!\n" + 
+                            "Cost: " + String.format("%.2f", cost) +
+                            "\nTicket ID: " + ticket.getId() + 
+                            "\nThank you for your purchase!";
+                    emailSender.sendEmail(email, message);
+                    return cost; 
                 }
             }
         }       
